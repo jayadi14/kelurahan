@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@features/auth/services/auth.service';
-import { User } from '@features/customer/interfaces/customer';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { FcToastService } from '@shared/components/fc-toast/fc-toast.service';
 import { Subject } from 'rxjs';
@@ -26,7 +25,7 @@ export class UserProfileComponent {
       },
     },
   ];
-  user: User = {} as User;
+  user: any = {} as any;
 
   loading = true;
 

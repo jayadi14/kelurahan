@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@features/auth/services/auth.service';
-import { User } from '@features/staff/interfaces/staff';
 import {
   faBars,
   faBell,
@@ -57,7 +56,7 @@ export class HeaderComponent {
   searchConfig: any = {};
 
   menus: any = [];
-  user: any = {} as User;
+  user: any = {} as any;
   notifications = [1, 2, 3, 4, 5];
   constructor(
     private layoutService: LayoutService,

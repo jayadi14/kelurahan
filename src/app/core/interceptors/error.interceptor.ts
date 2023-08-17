@@ -36,7 +36,6 @@ export class ErrorInterceptor implements HttpInterceptor {
           //   summary: e.error.response.error,
           //   detail: messages,
           // });
-
         } else if (e.status == 401) {
           // clear local storage
           localStorage.removeItem('access_token');
@@ -44,15 +43,15 @@ export class ErrorInterceptor implements HttpInterceptor {
           this.authService.currentUserDataSubject.next('');
           this.authService.currentUserTokensSubject.next('');
           this.router.navigate(['/auth/login']);
-          this.fcToastService.add({
-            header: 'Login',
-            message:
-              'Your session has expired, Please login again',
-            lottieOption: {
-              path: '/assets/lotties/warning.json',
-              loop: false,
-            },
-          });
+          // this.fcToastService.add({
+          //   header: 'Login',
+          //   message:
+          //     'Your session has expired, Please login again',
+          //   lottieOption: {
+          //     path: '/assets/lotties/warning.json',
+          //     loop: false,
+          //   },
+          // });
         } else if (e.status == 404) {
           this.router.navigate(['/error/not-found']);
         }

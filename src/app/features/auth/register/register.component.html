@@ -1,0 +1,203 @@
+<div class="flex min-h-screen w-full flex-row">
+  <div
+    class="relative hidden w-1/2 items-start justify-between bg-light-high p-8 dark:bg-dark-high lg:flex lg:flex-col">
+    <div
+      class="flex w-full flex-row items-center justify-start whitespace-nowrap text-base font-bold uppercase tracking-wider text-blue-900"></div>
+    <div class="flex flex-col">
+      <!-- <img
+        *ngIf="darkMode.isDark"
+        class="mb-5 w-80"
+        src="assets/images/logo/logo-image-white.webp"
+        alt="Folxcode" />
+      <img
+        *ngIf="!darkMode.isDark"
+        class="mb-5 w-80"
+        src="assets/images/logo/logo-image.webp"
+        alt="Folxcode" /> -->
+      <p class="mb-2 text-4xl font-medium">
+        Selamat datang di
+        <span class="font-bold text-primary-light">SIK</span>
+      </p>
+      <p class="">
+        Terima kasih telah bergabung bersama kami, jika anda mengalami kesulitan
+        <br />
+        Mohon untuk menghubungi kami.
+      </p>
+    </div>
+    <div
+      class="z-10 flex w-full flex-row items-center justify-between text-xs"></div>
+  </div>
+  <div
+    class="relative flex w-full flex-col items-center justify-between lg:w-1/2 lg:justify-center">
+    <div
+      class="absolute h-full w-full bg-[url('/assets/images/bg/login-bg.webp')] bg-cover bg-left bg-no-repeat brightness-50"></div>
+    <div
+      class="z-10 mt-10 flex w-full flex-row items-center justify-center whitespace-nowrap text-base font-bold uppercase tracking-wider text-white lg:hidden">
+      <!-- <a class="flex flex-row items-center justify-start space-x-2" href="/">
+        <span>
+          <img
+            *ngIf="darkMode.isDark"
+            class="h-20"
+            src="assets/images/logo/logo-image-white.webp"
+            alt="Folxcode" />
+          <img
+            *ngIf="!darkMode.isDark"
+            class="h-20"
+            src="assets/images/logo/logo-image.webp"
+            alt="Folxcode" />
+        </span>
+      </a> -->
+    </div>
+    <div
+      class="z-10 mx-auto w-[96vw] rounded-xl bg-light-high p-8 dark:bg-dark-high md:max-w-md">
+      <h2 class="text-3xl font-bold">Registrasi</h2>
+      <p class="mb-9 text-sm text-slate-600 dark:text-slate-400">
+        Sistem Informasi Kelurahan
+      </p>
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="submit()"
+        class="form space-y-4">
+        <div class="space-y-2">
+          <div
+            class="h-[250px] overflow-y-auto grid grid-cols-1 xl:grid-cols-2 items-center gap-2">
+            <div class="w-full">
+              <fc-input-text
+                [type]="'email'"
+                [title]="'Email'"
+                [placeholder]="'Masukkan Email Anda'"
+                formControlName="email">
+              </fc-input-text>
+            </div>
+            <div class="w-full">
+              <fc-input-number
+                title="Nomor Handphone"
+                formControlName="phone_number"
+                placeholder="Masukkan Nomor Handphone Anda"></fc-input-number>
+            </div>
+            <div class="w-full">
+              <fc-input-text
+                [type]="'password'"
+                [title]="'Password'"
+                [placeholder]="'Masukkan Password Anda'"
+                formControlName="password">
+              </fc-input-text>
+            </div>
+            <div class="w-full">
+              <fc-input-text
+                [type]="'password'"
+                [title]="'Konfirmasi Password'"
+                [placeholder]="'Masukkan Konfirmasi Password Anda'"
+                formControlName="confirm_password">
+              </fc-input-text>
+            </div>
+            <div class="w-full">
+              <fc-input-text
+                [title]="'Nama'"
+                [placeholder]="'Masukkan Nama Anda'"
+                formControlName="name">
+              </fc-input-text>
+            </div>
+            <div class="w-full">
+              <fc-input-text
+                [title]="'Tempat Lahir'"
+                [placeholder]="'Masukkan Tempat Lahir Anda'"
+                formControlName="birth_place">
+              </fc-input-text>
+            </div>
+            <div class="w-full">
+              <fc-datepicker
+                [placeholder]="'Tanggal Lahir'"
+                title="Tanggal Lahir"
+                formControlName="birth_date" />
+            </div>
+            <div class="w-full">
+              <fc-select-option
+                [options]="gender"
+                formControlName="gender"
+                [optionValue]="'id'"
+                [optionLable]="'name'"
+                title="Jenis Kelamin"
+                [placeholder]="'Pilih Jenis Kelamin'"
+                [desktopView]="'overlay'"
+                [mobileView]="'dialog'">
+              </fc-select-option>
+            </div>
+            <div class="w-full">
+              <fc-select-option
+                [options]="religion"
+                formControlName="religion"
+                [optionValue]="'id'"
+                [optionLable]="'name'"
+                title="Agama"
+                [placeholder]="'Pilih Agama'"
+                [desktopView]="'overlay'"
+                [mobileView]="'dialog'">
+              </fc-select-option>
+            </div>
+            <div class="w-full">
+              <fc-input-number
+                title="NIK"
+                formControlName="nik"
+                placeholder="Masukkan Nik Anda"></fc-input-number>
+            </div>
+            <div class="w-full">
+              <fc-select-option
+                [options]="rt"
+                formControlName="rt"
+                [optionValue]="'id'"
+                [optionLable]="'name'"
+                title="RT"
+                [placeholder]="'Pilih RT'"
+                [desktopView]="'overlay'"
+                [mobileView]="'dialog'">
+              </fc-select-option>
+            </div>
+            <div class="w-full">
+              <fc-select-option
+                [options]="rw"
+                formControlName="rw"
+                [optionValue]="'id'"
+                [optionLable]="'name'"
+                title="RW"
+                [placeholder]="'Pilih RW'"
+                [desktopView]="'overlay'"
+                [mobileView]="'dialog'">
+              </fc-select-option>
+            </div>
+          </div>
+          <a
+            type="button"
+            routerLink="/auth/login"
+            class="text-xs hover:text-primary hover:dark:text-primary-light">
+            Sudah Punya Akun ?
+          </a>
+        </div>
+        <p-button
+          type="submit"
+          label="Register"
+          styleClass="w-full p-button-sm bg-primary-light hover:bg-primary-dark"
+          [loading]="loading"
+          (onClick)="submit()"></p-button>
+      </form>
+    </div>
+    <div class="z-10"></div>
+  </div>
+</div>
+<div class="bottom-10 left-10 z-10 text-xs lg:fixed">
+  <a
+    class="flex items-center space-x-2 rounded-md bg-light-low p-2 dark:rounded-none dark:bg-dark-high"
+    href="/">
+    <span
+      ><img
+        class="rounded-md"
+        src="assets/images/logo/fc-white-blue.png"
+        width="30px"
+        alt="folxcode"
+    /></span>
+    <p class="">
+      Copyright <br />by
+      <span class="font-bold text-primary">Jayadi Akbar Pasaribu</span>
+    </p>
+  </a>
+</div>

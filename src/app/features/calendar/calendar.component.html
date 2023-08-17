@@ -1,0 +1,73 @@
+<div class="flex gap-3">
+  <div
+    class="calendar w-[600px] space-y-2 border dark:border-dark-low rounded-md p-3">
+    <div class="calendar-header flex items-center gap-2">
+      <div class="flex-1">
+        <button
+          type="button"
+          class="p-2 font-bold text-left rounded-md hover:bg-dark-low">
+          {{ currentMonth | date : 'MMMM yyyy' }}
+        </button>
+      </div>
+      <button
+        type="button"
+        class="p-2 rounded-md hover:bg-dark-low"
+        (click)="previousMonth()">
+        <fa-icon [icon]="faChevronLeft" [fixedWidth]="true"></fa-icon>
+      </button>
+      <button
+        type="button"
+        class="p-2 rounded-md hover:bg-dark-low"
+        (click)="nextMonth()">
+        <fa-icon [icon]="faChevronRight" [fixedWidth]="true"></fa-icon>
+      </button>
+    </div>
+    <div class="calendar-body">
+      <div class="days grid gap-5 grid-cols-7 justify-center items-center">
+        <div
+          class="day-number font-bold w-full text-centere aspect-square flex justify-center items-center py-1"
+          *ngFor="let day of daysOfWeek">
+          {{ day }}
+        </div>
+        <div
+          (click)="selectDate(day)"
+          class="day-number cursor-pointer font-bold w-full border aspect-square rounded-md text-center flex justify-center items-center"
+          [ngClass]="{
+            'dark:bg-dark-low dark:hover:bg-dark-lowest  border-transparent': day.isCurrentMonth ,
+            'border-dark-low text-white/40': !day.isCurrentMonth,
+
+        }"
+          *ngFor="let day of calendarDays">
+          {{ day.day }}
+        </div>
+      </div>
+    </div>
+    <div class="time-selector flex gap-2 justify-end">
+      <label for="hour">Hour:</label>
+      <input
+        class="bg-light-lowest text-center ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low rounded-md"
+        [min]="0"
+        [max]="23"
+        id="hour"
+        type="number"
+        [(ngModel)]="selectedHour" />
+      <label for="minute">Minute:</label>
+      <input
+        class="bg-light-lowest text-center ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low rounded-md"
+        [min]="0"
+        [max]="59"
+        id="minute"
+        type="number"
+        [(ngModel)]="selectedMinute" />
+      <label for="second">Second:</label>
+      <input
+        class="bg-light-lowest text-center ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low rounded-md"
+        [min]="0"
+        [max]="59"
+        id="second"
+        type="number"
+        [(ngModel)]="selectedSecond" />
+    </div>
+  </div>
+  <div>Selected Date: {{ selectedDate | date : 'dd/MM/yyyy H:mm:ss' }}</div>
+</div>

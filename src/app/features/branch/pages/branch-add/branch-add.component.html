@@ -1,0 +1,38 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar
+    [isHasBackButton]="true"
+    [actionButtons]="actionButtons"
+    [filterButtons]="filterButtons"></app-fc-action-bar>
+  <div class="body h-full w-full overflow-y-auto text-xs">
+    <form class="mx-auto mt-2 grid w-full gap-3" [formGroup]="branchForm">
+      <label
+        class="form-input border border-transparent flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest"
+        for="address">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Address
+        </p>
+        <input
+          class="input m-0 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+          type="text"
+          id="address"
+          formControlName="address"
+          placeholder="Enter Branch Adress" />
+      </label>
+      <label
+        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
+        for="note">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Note
+        </p>
+        <textarea
+          class="m-0 h-24 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+          type="text"
+          formControlName="note"
+          id="note"
+          placeholder="Enter Your Note"></textarea>
+      </label>
+    </form>
+  </div>
+</div>

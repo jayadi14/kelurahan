@@ -1,0 +1,98 @@
+<div
+  class="space-y-3 rounded-lg bg-light-highest p-3 backdrop-blur-sm dark:bg-dark-highest">
+  <div class="flex items-center">
+    <h3 class="flex-1 text-sm font-medium">{{ title }}</h3>
+    <button
+      class="rounded-md p-2 hover:bg-light-lowest hover:dark:bg-dark-lowest"
+      (click)="onClose()">
+      <fa-icon [fixedWidth]="true" [icon]="faTimes"></fa-icon>
+    </button>
+  </div>
+  <div class="space-y-3">
+    <div *ngIf="allowedFilteringData" class="branch-search mb-4 gap-2 flex">
+      <span class="p-input-icon-left w-full">
+        <input
+          pInputText
+          type="text"
+          class="p-input h-8 w-full text-xs"
+          placeholder="Search Product"
+          [(ngModel)]="searchQuery"
+          fcDebounceKeyup
+          [debounceTime]="900"
+          (onEvent)="search()" />
+        <i class="pi pi-search"></i>
+      </span>
+      <button
+        type="button"
+        [disabled]="loading"
+        class="btn text-xs p-1 btn-high"
+        (click)="loadData()">
+        <fa-icon
+          [fixedWidth]="true"
+          [icon]="faRefresh"
+          [spin]="loading"></fa-icon>
+      </button>
+    </div>
+    <div
+      class="customer-list h-[400px] overflow-auto rounded dark:bg-dark-high">
+      <div class="space-y-2" *ngIf="!loading">
+        <ng-container *ngFor="let product of products">
+          <button
+            [disabled]="product.isExist == true"
+            class="relative grid w-full cursor-pointer items-center gap-2 rounded-md border border-light-low bg-light-low p-2 text-left text-xs hover:border-primary-light dark:border-dark-low dark:bg-dark-low hover:dark:border-primary-light"
+            (click)="submit(product)">
+            <div
+              class="flex justify-between items-start w-full"
+              [ngClass]="{
+                'opacity-50': product.isExist == true
+              }">
+              <div class="flex gap-5">
+                <div
+                  class="bg-white flex-none object-cover w-14 aspect-square rounded-lg">
+                  <fc-image-preview
+                    [preview]="true"
+                    [src]="
+                      product.product_images[0].url
+                        ? product.product_images[0].url
+                        : 'assets/images/placeholder/placeholder_small.jpg'
+                    "
+                    [alt]="'liszthoven'" />
+                </div>
+                <div class="text-xs">
+                  <p class="font-bold capitalize">{{ product.name }}</p>
+                  <p>Stock: {{ product.quantity | number }} Pcs</p>
+                  <p class="font-bold">
+                    {{ product.base_price | fcCurrency }}/pcs
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="top-3 right-3 text-xs absolute"
+              *ngIf="product.isExist == true">
+              Already exsist
+            </div>
+          </button>
+        </ng-container>
+      </div>
+      <div class="py-[15vh] text-center" *ngIf="!products.length && !loading">
+        <img
+          class="object-cover mx-auto w-32 rounded-lg"
+          src="assets/images/bg/empty.png" />
+        <p>No Product Data</p>
+      </div>
+      <div class="py-[20vh] text-center" *ngIf="loading">
+        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+        <p>Loading . . .</p>
+      </div>
+    </div>
+    <div *ngIf="allowedFilteringData">
+      <fc-pagination
+        [rows]="rows"
+        [page]="page"
+        [totalPages]="totalPages"
+        [totalRecords]="totalRecords"
+        (onPageUpdate)="onPageUpdate($event)"></fc-pagination>
+    </div>
+  </div>
+</div>

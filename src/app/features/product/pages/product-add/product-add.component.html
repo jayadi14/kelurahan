@@ -1,0 +1,192 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar
+    [isHasBackButton]="true"
+    [actionButtons]="actionButtons"></app-fc-action-bar>
+  <div class="body h-full w-full overflow-y-auto py-5 text-xs">
+    <form
+      [formGroup]="productForm"
+      class="grid w-full gap-3 mb-16 md:mb-0 lg:mb-0 lg:flex">
+      <!-- Left Side -->
+      <div class="flex flex-col gap-3 flex-1">
+        <label
+          class="form-input border border-transparent flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest"
+          for="name">
+          <p
+            class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+            Name
+          </p>
+          <input
+            class="input m-0 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+            type="text"
+            id="name"
+            formControlName="name"
+            placeholder="Enter Product Name" />
+        </label>
+
+        <div class="grid gap-2">
+          <fc-input-number
+            title="Base price"
+            formControlName="base_price"
+            placeholder="Enter price"></fc-input-number>
+          <!-- <fc-input-number
+            title="Quantity"
+            formControlName="quantity"
+            placeholder="Enter quantity"></fc-input-number> -->
+        </div>
+        <div class="grid lg:grid-cols-3 gap-2">
+          <fc-select-option
+            [options]="productType"
+            formControlName="type"
+            [optionValue]="'id'"
+            [optionLable]="'name'"
+            title="Product Type"
+            [placeholder]="'Select Type of Product'"
+            [desktopView]="'overlay'"
+            [mobileView]="'dialog'">
+          </fc-select-option>
+          <fc-select-option
+            [options]="productStatus"
+            formControlName="status"
+            [optionValue]="'id'"
+            [optionLable]="'name'"
+            title="Status"
+            [placeholder]="'Select Status Product'"
+            [desktopView]="'overlay'"
+            [mobileView]="'dialog'">
+          </fc-select-option>
+          <fc-select-option
+            [options]="productValuationMethod"
+            formControlName="valuation_method"
+            [optionValue]="'id'"
+            [optionLable]="'name'"
+            title="Valuation Method"
+            [placeholder]="'Select Valuation Method'"
+            [desktopView]="'overlay'"
+            [mobileView]="'dialog'">
+          </fc-select-option>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-2">
+          <!-- Category -->
+          <div
+            class="form-input items-center flex cursor-pointer dark:hover:bg-dark-lowest rounded-lg bg-light-lowest p-2 dark:bg-dark-low">
+            <div class="flex flex-col flex-1">
+              <p
+                class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+                Product Category
+              </p>
+              <p *ngIf="selectedCategory" class="text-xs">
+                {{ selectedCategory.name }}
+              </p>
+              <p *ngIf="!selectedCategory" class="text-xs dark:text-gray-400">
+                Select Product Category
+              </p>
+            </div>
+            <div class="flex gap-2 items-center">
+              <button
+                *ngIf="selectedCategory"
+                type="button"
+                (click)="removeCategory()">
+                <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+              </button>
+              <button type="button" (click)="onSelectProductCategory()">
+                <fa-icon [fixedWidth]="true" [icon]="faChevronDown"></fa-icon>
+              </button>
+            </div>
+          </div>
+          <!-- Brand -->
+          <div
+            class="form-input items-center flex cursor-pointer dark:hover:bg-dark-lowest rounded-lg bg-light-lowest p-2 dark:bg-dark-low">
+            <div class="flex flex-col flex-1">
+              <p
+                class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+                Product Brand
+              </p>
+              <p *ngIf="selectedBrand" class="text-xs">
+                {{ selectedBrand.name }}
+              </p>
+              <p *ngIf="!selectedBrand" class="text-xs dark:text-gray-400">
+                Select Product Brand
+              </p>
+            </div>
+            <div class="flex gap-2 items-center">
+              <button
+                *ngIf="selectedBrand"
+                type="button"
+                (click)="removeBrand()">
+                <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+              </button>
+              <button type="button" (click)="onSelectProductBrand()">
+                <fa-icon [fixedWidth]="true" [icon]="faChevronDown"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right Side -->
+      <div class="flex flex-col gap-3 flex-1">
+        <label
+          class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
+          for="description">
+          <p
+            class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+            Description
+          </p>
+          <textarea
+            class="m-0 h-24 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+            type="text"
+            formControlName="description"
+            id="description"
+            placeholder="Enter Product Description"></textarea>
+        </label>
+        <div class="flex gap-2 flex-wrap lg:flex-wrap">
+          <fc-file-input [multiple]="true" (onInput)="addMultipleImage($event)">
+            <div
+              class="form-input text-center w-32 h-32 flex justify-center items-center border border-transparent flex-col rounded-lg bg-light-lowest p-3 dark:bg-dark-low">
+              <fa-icon
+                class="text-xl"
+                [fixedWidth]="true"
+                [icon]="faCloudArrowUp"></fa-icon>
+              <p>Drag or Image here</p>
+            </div>
+          </fc-file-input>
+          <ng-container
+            *ngFor="
+              let image of productForm.value.product_images;
+              let i = index
+            ">
+            <div
+              class="w-32 flex-none aspect-square border border-light-lowest dark:border-dark-lowest rounded-md overflow-hidden">
+              <fc-image-preview
+                [preview]="true"
+                [src]="image.src"
+                [alt]="'liszthoven'">
+                <div class="action-buttons flex gap-1">
+                  <div
+                    class="px-3 rounded-md"
+                    [ngClass]="{
+                      'bg-none': selectedDefaultImage != image,
+                      'bg-green-500': selectedDefaultImage == image
+                    }"
+                    *ngIf="selectedDefaultImage"></div>
+                  <button
+                    *ngIf="!selectedDefaultImage"
+                    type="button"
+                    (click)="onSelectedDefaultImage(image)"
+                    class="p-1 rounded-md bg-green-600 hover:bg-green-700 dark:hover:bg-green-500 text-2xs text-white">
+                    <fa-icon [fixedWidth]="true" [icon]="faCheck"></fa-icon>
+                  </button>
+                  <button
+                    type="button"
+                    (click)="removeProductImage(image, i)"
+                    class="p-1 rounded-md bg-red-600 hover:bg-red-700 dark:hover:bg-red-500 text-2xs text-white">
+                    <fa-icon [fixedWidth]="true" [icon]="faTrash"></fa-icon>
+                  </button>
+                </div>
+              </fc-image-preview>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

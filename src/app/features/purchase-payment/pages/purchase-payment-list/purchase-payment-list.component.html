@@ -1,0 +1,93 @@
+<div class="flex h-full flex-col gap-3">
+  <app-fc-action-bar
+    [actionButtons]="actionButtons"
+    [filterButtons]="filterButtons"></app-fc-action-bar>
+  <div class="body h-full w-full overflow-y-auto text-xs">
+    <!-- Data List -->
+    <div class="mt-2 grid gap-2" *ngIf="!loading">
+      <ng-container *ngFor="let purchasePayment of purchasePayments">
+        <div
+          (dblclick)="navigateToDetail(purchasePayment)"
+          class="fc-animate-translate-up cursor-pointer @container items-center rounded-md border border-light-low bg-light-low hover:border-primary-light dark:border-dark-low dark:bg-dark-low hover:dark:border-primary-light">
+          <div class="hidden @2xl:flex items-center gap-3 p-3">
+            <div class="w-[100px]">
+              <p>
+                {{ purchasePayment.created_at | date : 'dd MMMM yyyy' }}
+              </p>
+            </div>
+            <div class="w-full @lg:w-[100px]">
+              <div
+                class="rounded-md w-fit py-1 px-2"
+                [ngClass]="getStatusColor(purchasePayment.status)">
+                {{ purchasePayment.status_name }}
+              </div>
+            </div>
+            <div class="w-full @lg:w-[100px]">
+              <div class="rounded-md w-fit">
+                {{ purchasePayment.payment_method }}
+              </div>
+            </div>
+            <div class="flex-1 text-right">
+              <p>{{ purchasePayment.amount_paid | fcCurrency }}</p>
+            </div>
+            <div class="flex gap-1 justify-end">
+              <button
+                type="button"
+                class="btn btn-high"
+                (click)="navigateToDetail(purchasePayment)">
+                <fa-icon [fixedWidth]="true" [icon]="faEye"></fa-icon>
+              </button>
+            </div>
+          </div>
+          <div class="@2xl:hidden gird gap-3 p-2">
+            <div class="w-full flex justify-between items-center">
+              <div class="flex-1">
+                <p class="text-2xs">
+                  {{ purchasePayment.date | date : 'dd MMMM yyyy' }}
+                </p>
+                <p class="font-bold">
+                  {{ purchasePayment.payment_method }}
+                </p>
+              </div>
+              <div class="flex justify-end gap-2 items-center">
+                <div
+                  class="rounded-md w-fit py-1 px-2"
+                  [ngClass]="getStatusColor(purchasePayment.status)">
+                  {{ purchasePayment.status_name }}
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-high"
+                  (click)="navigateToDetail(purchasePayment)">
+                  <fa-icon [fixedWidth]="true" [icon]="faEye"></fa-icon>
+                </button>
+              </div>
+            </div>
+            <div
+              class="my-2 w-full bg-light-lowest/50 dark:bg-dark-lowest/50 h-0.5"></div>
+
+            <div class="flex-1">
+              <p class="text-right text-base">
+                {{ purchasePayment.amount_paid | fcCurrency }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="py-[20vh] text-center" *ngIf="loading">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+      <p>Loading . . .</p>
+    </div>
+  </div>
+  <div class="flex justify-end gap-3">
+    <div class="w-full lg:w-96">
+      <fc-pagination
+        [rows]="rows"
+        [page]="page"
+        [totalPages]="totalPages"
+        [totalRecords]="totalRecords"
+        (onPageUpdate)="onPageUpdate($event)"></fc-pagination>
+    </div>
+  </div>
+</div>

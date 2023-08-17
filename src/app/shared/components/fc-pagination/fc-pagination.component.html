@@ -1,0 +1,19 @@
+<div class="flex w-full items-center gap-3 text-xs @container">
+  <div class="flex-1 @sm:hidden">{{ page }} of {{ totalPages }}</div>
+  <button
+    class="rotate-180 rounded-md bg-slate-100 p-2 hover:bg-slate-300 dark:bg-dark-low dark:hover:bg-dark-lowest"
+    (click)="onPrevPage()">
+    <fa-icon [fixedWidth]="true" [icon]="faCaretRight"></fa-icon>
+  </button>
+  <button
+    type="button"
+    class="flex-1 hidden @sm:block rounded-md bg-slate-100 p-2 text-center dark:bg-dark-low dark:hover:bg-dark-lowest"
+    (click)="onOpenPaginationDialog()">
+    Page {{ page }} / {{ totalPages }}
+  </button>
+  <button
+    class="rounded-md bg-slate-100 p-2 hover:bg-slate-300 dark:bg-dark-low dark:hover:bg-dark-lowest"
+    (click)="onNextPage()">
+    <fa-icon [fixedWidth]="true" [icon]="faCaretRight"></fa-icon>
+  </button>
+</div>

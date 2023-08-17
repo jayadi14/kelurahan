@@ -1,0 +1,129 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar
+    [isHasBackButton]="true"
+    [actionButtons]="actionButtons"
+    [filterButtons]="filterButtons">
+  </app-fc-action-bar>
+  <form
+    [formGroup]="purchaseNoteForm"
+    class="body h-full w-full overflow-y-auto text-xs @container">
+    <div
+      *ngIf="!loading"
+      class="mx-auto mt-2 grid w-full gap-3 grid-cols-1 @xl:grid-cols-2">
+      <fc-select-option
+        [options]="purchaseNoteType"
+        formControlName="type"
+        [optionValue]="'id'"
+        [optionLable]="'name'"
+        title="Type"
+        [placeholder]="'Select Type of Purchase Note'"
+        [desktopView]="'overlay'"
+        [mobileView]="'dialog'">
+      </fc-select-option>
+      <fc-datepicker
+        title="Date"
+        formControlName="date"
+        [placeholder]="'Date'" />
+      <div class="@xl:col-span-2">
+        <fc-input-text
+          [title]="'Note'"
+          [placeholder]="'Enter Note'"
+          formControlName="note" />
+      </div>
+
+      <div class="purchase-note-detail @xl:col-span-2">
+        <div class="flex items-center w-full mt-2">
+          <h3 class="flex-1">Detail</h3>
+          <button
+            type="button"
+            class="flex gap-1 rounded-lg p-2 hover:bg-light-lowest dark:hover:bg-dark-lowest"
+            (click)="onAddPurchaseNoteDetail()">
+            <fa-icon [icon]="faPlus"></fa-icon>
+            Add New Item
+          </button>
+        </div>
+        <div
+          class="overflow-y-auto transition-all duration-700 ease-in-out w-full py-2"
+          *ngIf="!loading">
+          <div
+            class="grid lg:grid-cols-2 gap-2"
+            *ngIf="purchaseNoteDetails.value.length > 0">
+            <ng-container
+              *ngFor="
+                let purchaseNoteDetail of purchaseNoteDetails.value;
+                let i = index
+              ">
+              <div
+                class="fc-animate-translate-up grid cursor-pointer grid-cols-1 items-center justify-between rounded-md border border-light-low bg-light-low p-3 hover:border-primary-light dark:border-dark-low dark:bg-dark-low hover:dark:border-primary-light lg:flex">
+                <div class="@lg:flex items-center w-full gap-3">
+                  <div class="gap-2 flex-1 flex">
+                    <div
+                      class="bg-white flex-none object-cover w-12 aspect-square rounded-lg">
+                      <fc-image-preview
+                        [preview]="true"
+                        [src]="
+                          purchaseNoteDetail.purchase_invoice_detail.product
+                            .product_images[0].url
+                            ? purchaseNoteDetail.purchase_invoice_detail.product
+                                .product_images[0].url
+                            : 'assets/images/placeholder/placeholder_small.jpg'
+                        ">
+                      </fc-image-preview>
+                    </div>
+                    <div class="w-full">
+                      <a
+                        [routerLink]="[
+                          '/purchase-invoice/view',
+                          purchaseNoteDetail.purchase_invoice_detail
+                            .purchase_invoice_id
+                        ]"
+                        target="_blank"
+                        pTooltip="View Purchase Invoice"
+                        class="font-bold capitalize hover:text-primary-dark dark:hover:text-primary-light">
+                        {{
+                          purchaseNoteDetail.purchase_invoice_detail.product
+                            .name
+                        }}
+                      </a>
+                      <p>
+                        {{ purchaseNoteDetail.amount | fcCurrency }}
+                      </p>
+                      {{ purchaseNoteDetail.description }}
+                    </div>
+                  </div>
+                  <div class="flex gap-1 justify-end">
+                    <button
+                      type="button"
+                      class="btn btn-high"
+                      (click)="onEditPurchaseNoteDetail(i)">
+                      <fa-icon [fixedWidth]="true" [icon]="faPencil"></fa-icon>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-high"
+                      (click)="
+                        onRemovePurchaseNoteDetail(i, purchaseNoteDetail.id)
+                      ">
+                      <fa-icon [fixedWidth]="true" [icon]="faTrash"></fa-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div
+            class="flex justify-center items-center w-full h-full"
+            *ngIf="purchaseNoteDetails.value.length === 0">
+            <p class="text-xs text-dark-lowest dark:text-white/60 py-10">
+              No Item Added
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="py-[20vh] text-center" *ngIf="loading">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+      <p>Loading . . .</p>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,38 @@
+<div class="flex h-full flex-col gap-5 @container">
+  <app-fc-action-bar
+    [actionButtons]="actionButtons"
+    [filterButtons]="filterButtons"></app-fc-action-bar>
+  <div class="body flex h-full w-full gap-3 overflow-y-auto text-xs">
+    <!-- Data List -->
+    <ng-container *ngIf="chartOfAccounts.length > 0">
+      <div
+        class="space-y-2 overflow-y-auto transition-all duration-700 ease-in-out w-full @container">
+        <div class="flex w-full">
+          <div class="w-20">Check</div>
+          <div class="flex-1">Lock</div>
+          <div class="flex-1">Account Code</div>
+          <div class="flex-1">Account Name</div>
+          <div class="flex-1 text-right">Balance</div>
+        </div>
+        <ng-container *ngFor="let chartOfAccount of chartOfAccounts">
+          <div class="flex w-full">
+            <div class="w-20">Check</div>
+            <div class="flex-1">Lock</div>
+            <div class="flex-1">{{ chartOfAccount.number }}</div>
+            <div class="flex-1">{{ chartOfAccount.name }}</div>
+            <div class="flex-1 text-right">{{ chartOfAccount.balance }}</div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!loading && chartOfAccounts.length == 0">
+      <div class="w-full py-[20vh] text-center">
+        <p>No data found</p>
+      </div>
+    </ng-container>
+    <div class="w-full py-[20vh] text-center" *ngIf="loading">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+      <p>Loading . . .</p>
+    </div>
+  </div>
+</div>

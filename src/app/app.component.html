@@ -1,0 +1,10 @@
+<div class="bg-light-low dark:bg-dark-low dark:[&>*]:text-gray-200">
+  <router-outlet></router-outlet>
+</div>
+<p-toast position="bottom-right"></p-toast>
+<p-confirmDialog
+  [style]="{ 'max-width': '500px', widht: '100%' }"
+  key="confirmDialog"
+  [position]="'bottom'"></p-confirmDialog>
+<fc-toast></fc-toast>
+<fc-confirm></fc-confirm>

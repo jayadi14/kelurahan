@@ -1,0 +1,9 @@
+.p-dialog .p-dialog-content {
+  @apply p-0;
+}
+.dark .p-dialog .p-dialog-header {
+  @apply bg-transparent text-slate-300;
+}
+.dark .p-dialog .p-dialog-content {
+  @apply bg-transparent text-slate-300;
+}

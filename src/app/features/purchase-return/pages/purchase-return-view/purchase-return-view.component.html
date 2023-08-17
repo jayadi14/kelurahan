@@ -1,0 +1,175 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar
+    [isHasBackButton]="true"
+    [actionButtons]="actionButtons"
+    [filterButtons]="filterButtons">
+  </app-fc-action-bar>
+  <form
+    [formGroup]="purchaseReturnForm"
+    class="body h-full w-full overflow-y-auto text-xs @container">
+    <div *ngIf="!loading" class="mt-2 grid w-full gap-3 @xl:grid-cols-2">
+      <fc-input-text
+        [title]="'Purchase Return Number'"
+        [placeholder]="'Enter Purchase Return Number'"
+        formControlName="purchase_return_no">
+      </fc-input-text>
+      <div class="grid @xl:grid-cols-2 gap-3">
+        <!-- Select Destination -->
+        <fc-select-option
+          [disabled]="!purchaseReturnForm.value.destination"
+          (onSelect)="changeDestination()"
+          (onRemove)="removeDestination()"
+          [options]="purchaseReturnDestination"
+          formControlName="destination"
+          [optionValue]="'id'"
+          [optionLable]="'name'"
+          title="Destination"
+          [placeholder]="'Select Destination'"
+          [desktopView]="'overlay'"
+          [mobileView]="'dialog'">
+        </fc-select-option>
+        <!-- Select Purchase Return Type -->
+        <fc-select-option
+          [disabled]="!purchaseReturnForm.value.type"
+          [options]="purchaseReturnTypes"
+          formControlName="type"
+          [optionValue]="'id'"
+          [optionLable]="'name'"
+          title="Type"
+          [placeholder]="'Select Type'"
+          [desktopView]="'overlay'"
+          [mobileView]="'dialog'">
+        </fc-select-option>
+      </div>
+      <fc-datepicker
+        title="Date"
+        formControlName="date"
+        [placeholder]="'Date'" />
+      <!-- Select Supplier -->
+      <div
+        class="form-input items-center flex cursor-pointer dark:hover:bg-dark-lowest rounded-lg bg-light-lowest p-2 dark:bg-dark-low">
+        <div class="flex flex-col flex-1">
+          <p
+            class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+            Supplier
+          </p>
+          <p *ngIf="purchaseReturnForm.value.supplier" class="text-xs">
+            {{ purchaseReturnForm.value.supplier.name }}
+          </p>
+          <p
+            *ngIf="!purchaseReturnForm.value.supplier"
+            class="text-xs dark:text-gray-400">
+            Select Supplier
+          </p>
+        </div>
+      </div>
+
+      <div class="@xl:col-span-2">
+        <fc-input-text
+          [title]="'Note'"
+          [placeholder]="'Enter Note'"
+          formControlName="note" />
+      </div>
+
+      <div class="purchase-return-detail @xl:col-span-2">
+        <div class="flex items-center w-full mt-2">
+          <h3 class="flex-1">Detail</h3>
+          <button
+            *ngIf="purchaseReturn.status == 0"
+            [ngClass]="{
+              'opacity-30': purchaseReturnForm.value.destination == null
+            }"
+            [disabled]="purchaseReturnForm.value.destination == null"
+            type="button"
+            class="flex gap-1 rounded-lg p-2 hover:bg-light-lowest dark:hover:bg-dark-lowest"
+            (click)="onAddPurchaseReturnDetail()">
+            <fa-icon [icon]="faPlus"></fa-icon>
+            Add New Item
+          </button>
+        </div>
+        <div
+          class="overflow-y-auto transition-all duration-700 ease-in-out w-full py-2">
+          <div
+            class="grid @xl:grid-cols-2 gap-3"
+            *ngIf="purchaseReturnDetails.value.length > 0">
+            <ng-container
+              *ngFor="
+                let purchaseReturnDetail of purchaseReturnDetails.value;
+                let i = index
+              ">
+              <div
+                class="fc-animate-translate-up grid cursor-pointer grid-cols-1 items-center justify-between rounded-md border border-light-low bg-light-low p-3 hover:border-primary-light dark:border-dark-low dark:bg-dark-low hover:dark:border-primary-light lg:flex">
+                <div class="@lg:flex items-center w-full gap-3">
+                  <div class="@lg:flex-1 w-full flex items-center gap-3">
+                    <!-- <div
+                      class="bg-white flex-none object-cover w-20 aspect-square rounded-lg">
+                      <fc-image-preview
+                        [preview]="true"
+                        [src]="
+                          purchaseReturnDetail.purchaseable.product
+                            .product_images[0].url
+                            ? purchaseReturnDetail.purchaseable.product
+                                .product_images[0].url
+                            : 'assets/images/placeholder/placeholder_small.jpg'
+                        ">
+                      </fc-image-preview>
+                    </div> -->
+                    <div class="space-y-1">
+                      <a
+                        *ngIf="purchaseReturnDetail.purchaseable"
+                        [routerLink]="[
+                          '/product/view',
+                          purchaseReturnDetail.purchaseable.product.id
+                        ]"
+                        target="_blank"
+                        pTooltip="View Product"
+                        class="font-bold capitalize hover:text-primary-dark dark:hover:text-primary-light">
+                        {{ purchaseReturnDetail.purchaseable.product.name }}
+                      </a>
+                      <p>{{ purchaseReturnDetail.quantity }} Pcs</p>
+                      <p>
+                        {{ purchaseReturnDetail.amount | fcCurrency }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
+                    class="flex gap-1 justify-end"
+                    *ngIf="purchaseReturn.status == 0">
+                    <button
+                      type="button"
+                      class="btn btn-high"
+                      (click)="
+                        onEditPurchaseReturnDetail(purchaseReturnDetail.id, i)
+                      ">
+                      <fa-icon [fixedWidth]="true" [icon]="faPencil"></fa-icon>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-high"
+                      (click)="
+                        onRemovePurchaseReturnDetail(purchaseReturnDetail.id, i)
+                      ">
+                      <fa-icon [fixedWidth]="true" [icon]="faTrash"></fa-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div
+            class="flex justify-center items-center w-full h-full"
+            *ngIf="purchaseReturnDetails.value.length === 0">
+            <p class="text-xs text-dark-lowest dark:text-white/60 py-10">
+              No Item Added
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="py-[20vh] text-center" *ngIf="loading">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+      <p>Loading . . .</p>
+    </div>
+  </form>
+</div>

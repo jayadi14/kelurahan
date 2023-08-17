@@ -1,0 +1,21 @@
+<div class="order-nav flex justify-between">
+  <div>
+    <button
+      class="btn-slate flex items-center gap-2 rounded-md p-4 text-sm font-medium md:px-4 md:py-2"
+      [ngClass]="{ 'opacity-50': !previousId }"
+      [disabled]="!previousId"
+      (click)="navigateToPrevious()">
+      <i class="pi pi-angle-left"></i>
+      <span class="hidden md:block">Previous</span>
+    </button>
+  </div>
+  <div>
+    <button
+      class="btn-slate flex items-center gap-2 rounded-md p-4 text-sm font-medium md:px-4 md:py-2"
+      [ngClass]="{ 'opacity-50': !nextId }"
+      [disabled]="!nextId"
+      (click)="navigateToNext()">
+      <span class="hidden md:block">Next</span><i class="pi pi-angle-right"></i>
+    </button>
+  </div>
+</div>

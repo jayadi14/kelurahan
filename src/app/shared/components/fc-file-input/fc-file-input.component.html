@@ -1,0 +1,16 @@
+<label
+  for="fileInput"
+  tabindex="0"
+  (keypress)="fileInput.click()"
+  class="relative">
+  <ng-content></ng-content>
+  <input
+    (change)="uploadFile($event)"
+    id="fileInput"
+    tabindex="-1"
+    #fileInput
+    type="file"
+    accept="image/*"
+    class="h-full w-full absolute cursor-pointer opacity-0 z-10 top-0"
+    [multiple]="multiple" />
+</label>

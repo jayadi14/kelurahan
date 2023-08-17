@@ -1,0 +1,64 @@
+<div
+  #targetEl
+  (click)="disabled ? '' : fcDialog.toggle($event)"
+  class="form-input items-center flex dark:hover:bg-dark-lowest rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
+  [ngClass]="{ 'cursor-pointer': !disabled, 'opacity-50': disabled }">
+  <div class="flex flex-col flex-1">
+    <p
+      class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+      {{ title }}
+    </p>
+    <p class="text-xs" *ngIf="value != null">
+      {{ valueLabel }}
+    </p>
+    <p class="text-xs dark:text-gray-400" *ngIf="value == null">
+      {{ placeholder }}
+    </p>
+  </div>
+  <div class="flex gap-2 items-center" *ngIf="!disabled">
+    <button type="button" (click)="onRemoveValue()" *ngIf="value != null">
+      <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+    </button>
+    <button>
+      <fa-icon [fixedWidth]="true" [icon]="faChevronDown"></fa-icon>
+    </button>
+  </div>
+</div>
+
+<fc-dialog
+  #fcDialog
+  [title]="title"
+  [desktopView]="desktopView"
+  [mobileView]="mobileView">
+  <div
+    class="dark:text-light-lowest w-full dark:bg-dark-low flex flex-col gap-2 py-2">
+    <div class="search flex px-2" *ngIf="searchable">
+      <span class="p-input-icon-left w-full">
+        <input
+          pInputText
+          type="text"
+          class="p-input h-8 w-full text-xs"
+          [(ngModel)]="searchQuery"
+          [placeholder]="'Search ' + optionLable" />
+        <i class="pi pi-search"></i>
+      </span>
+    </div>
+    <div
+      class="list h-[200px] min-w-[250px] overflow-auto rounded p-2 hover:ring-transparent hover:border-transparent">
+      <ng-container *ngFor="let option of showableOptions">
+        <button
+          (click)="onValueChange(option); fcDialog.toggle($event, targetEl)"
+          class="grid w-full cursor-pointer dark:bg-dark-high items-center gap-2 rounded-md border border-light-low bg-light-low p-2 text-left text-xs hover:border-primary-light dark:border-dark-low hover:dark:border-primary-light">
+          <p>{{ option[optionLable] }}</p>
+        </button>
+      </ng-container>
+    </div>
+    <div class="px-2" *ngIf="pagination">
+      <fc-pagination
+        [rows]="1"
+        [page]="1"
+        [totalPages]="2"
+        [totalRecords]="100"></fc-pagination>
+    </div>
+  </div>
+</fc-dialog>

@@ -1,0 +1,62 @@
+<button
+  #targetEl
+  type="button"
+  (click)="calculator.toggle($event, target ? target : targetEl)">
+  <fa-icon [fixedWidth]="true" [icon]="faCalculator"></fa-icon>
+</button>
+
+<fc-dialog
+  #calculator
+  [title]="title"
+  [desktopView]="'overlay'"
+  [mobileView]="'dialog'">
+  <div
+    class="dark:text-light-lowest w-full dark:bg-dark-low flex flex-col gap-1 py-1">
+    <div class="input p-1 dark:bg-dark-high mx-1 rounded-md">
+      <p
+        class="history text-2xs text-left dark:text-white/60"
+        [ngClass]="{ visible: calculateString, invisible: !calculateString }">
+        <ng-container *ngIf="!calculateString">null</ng-container>
+        <ng-container *ngIf="calculateString">
+          <ng-container>{{ calculateString }}</ng-container>
+        </ng-container>
+      </p>
+      <p class="history text-sm text-right" [ngClass]="{ visible: true }">
+        {{ value | number }}
+      </p>
+    </div>
+    <div class="number-input grid md:w-[225px] grid-cols-5 gap-1 p-1">
+      <button
+        [title]="calclulatorButton.label"
+        (click)="addValue(calclulatorButton)"
+        type="button"
+        class="w-full dark:bg-dark-high dark:hover:bg-dark-lowest/40 aspect-square flex justify-center items-center bg-light-lowest rounded-lg text-dark-lowest dark:text-light-lowest text-xs"
+        *ngFor="let calclulatorButton of calclulatorButtons">
+        <span>
+          <ng-container *ngIf="!calclulatorButton.icon">
+            {{ calclulatorButton.value }}
+          </ng-container>
+          <ng-container *ngIf="calclulatorButton.icon">
+            <fa-icon
+              [fixedWidth]="true"
+              [icon]="calclulatorButton.icon"></fa-icon>
+            <p class="text-2xs" *ngIf="calclulatorButton.value != 'del'">
+              {{ calclulatorButton.label }}
+            </p>
+          </ng-container>
+        </span>
+      </button>
+      <button
+        [title]="'equal'"
+        (click)="addValue(    {
+        label: 'equal',
+        value: '=',
+        isEqual: true,
+      })"
+        type="button"
+        class="w-full h-full col-span-2 bg-primary-light dark:bg-primary-dark flex justify-center items-center rounded-lg text-dark-lowest dark:text-light-lowest text-xs">
+        <span> = </span>
+      </button>
+    </div>
+  </div>
+</fc-dialog>

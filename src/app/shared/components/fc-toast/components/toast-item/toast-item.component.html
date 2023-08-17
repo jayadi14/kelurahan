@@ -1,0 +1,58 @@
+<div
+  class="dark:text-gray-200 py-2 px-4 rounded-lg bg-light-low/50 dark:bg-dark-low w-full text-left text-xs duration-500 ease-in-out transition group"
+  [ngClass]="{
+'translate-x-0 opacity-100': toast.showed,
+'translate-x-full opacity-0': !toast.showed,
+}">
+  <div class="toast">
+    <button
+      type="button"
+      class="absolute -top-2 -left-2 rounded-full text-xs bg-light-lowest/50 hover:bg-light-lowest dark:bg-dark-lowest/50 p-1 hidden group-hover:block dark:hover:bg-dark-lowest"
+      (click)="close()">
+      <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+    </button>
+    <div class="flex gap-2 items-center">
+      <div
+        class="illust h-[40px] aspect-square rounded-lg"
+        *ngIf="toast.lottieOption">
+        <ng-lottie
+          [options]="toast.lottieOption"
+          (animationCreated)="animationCreated($event)"></ng-lottie>
+      </div>
+      <div class="content">
+        <div class="header text-xs flex items-center">
+          <div class="title flex-1 flex items-center gap-1">
+            <p class="text-xs">{{ toast.header }}</p>
+          </div>
+        </div>
+        <div class="body">
+          <div class="subject">
+            <p class="text-2xs font-bold">{{ toast.subheader }}</p>
+          </div>
+          <div class="message">
+            <p class="text-2xs">
+              {{ toast.message }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div
+        class="action-buttons flex justify-end gap-2 flex-wrap"
+        *ngIf="toast.actionButtons">
+        <button
+          type="button"
+          class="py-1 px-3 rounded-md btn-high text-xs"
+          (click)="actionButton.action(); close()"
+          *ngFor="let actionButton of toast.actionButtons">
+          <fa-icon
+            [icon]="actionButton.icon"
+            [fixedWidth]="true"
+            *ngIf="actionButton.icon"></fa-icon>
+          {{ actionButton.label }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

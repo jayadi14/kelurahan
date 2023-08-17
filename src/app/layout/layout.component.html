@@ -1,0 +1,24 @@
+<div class="flex">
+  <div
+    class="hidden h-screen w-[266px] flex-none transition-all duration-500 ease-in-out md:block"
+    [ngClass]="{
+      'ml-0 hidden': isShowSidebar,
+      '-ml-[266px] block': !isShowSidebar
+    }">
+    <app-sidebar
+      (onToggleSidebar)="toggleSidebar($event)"
+      [showSidebar]="isShowSidebar"></app-sidebar>
+  </div>
+  <div
+    class="flex h-screen flex-1 flex-col bg-light-high dark:bg-dark-high"
+    [ngClass]="{ 'md:rounded-l-3xl': isShowSidebar }">
+    <app-header
+      (onToggleSidebar)="toggleSidebar($event)"
+      [showSidebar]="isShowSidebar"></app-header>
+    <div class="relative flex-1 overflow-y-auto px-3 pb-3">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+<!-- <fc-mobile-navigation class="print:hidden"></fc-mobile-navigation> -->

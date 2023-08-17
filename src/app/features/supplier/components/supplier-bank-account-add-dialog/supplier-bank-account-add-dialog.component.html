@@ -1,0 +1,25 @@
+<div
+  class="space-y-3 rounded-lg bg-light-highest p-3 backdrop-blur-sm dark:bg-dark-highest">
+  <div class="flex items-center">
+    <h3 class="flex-1 text-sm font-medium">{{ title }}</h3>
+    <button
+      class="rounded-md p-2 hover:bg-light-lowest hover:dark:bg-dark-lowest"
+      (click)="onClose()">
+      <fa-icon [fixedWidth]="true" [icon]="faTimes"></fa-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="supplierBankAccountForm" class="grid gap-3">
+    <fc-input-text [title]="'Account Number'" formControlName="account_no" />
+    <fc-input-text [title]="'Bank'" formControlName="bank" />
+    <fc-input-text [title]="'Swift Code'" formControlName="swift_code" />
+    <div class="flex items-center justify-end gap-3 pt-3">
+      <button
+        type="button"
+        class="fc-animate-translate-up flex items-center gap-2 rounded-md bg-light-lowest p-2 text-sm dark:bg-dark-lowest"
+        (click)="submit()">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>

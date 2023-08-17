@@ -1,0 +1,28 @@
+<div
+  #targetEl
+  (click)="onValueChange(!value)"
+  [ngClass]="value == true ? 'border-primary' : ''"
+  class="form-input  items-center border-2 border-transparent py-2 flex cursor-pointer dark:hover:bg-dark-lowest rounded-lg bg-light-lowest p-2 dark:bg-dark-low">
+  <div class="flex flex-col flex-1">
+    <p
+      class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+      {{ title }}
+    </p>
+    <p class="text-xs dark:text-gray-400">
+      {{ description }}
+    </p>
+  </div>
+  <div class="flex gap-2 items-center">
+    <button type="button" class="flex items-center">
+      <!-- <fa-icon
+        [fixedWidth]="true"
+        [icon]="value ? faCheckCircle : faTimesCircle"></fa-icon> -->
+
+        <div class="h-[35px]">
+          <ng-lottie
+          [options]="value ? lottieOption[0] : lottieOption[1] "
+          (animationCreated)="animationCreated($event)"></ng-lottie>
+        </div>
+    </button>
+  </div>
+</div>

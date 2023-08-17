@@ -1,0 +1,54 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar
+    [isHasBackButton]="true"
+    [actionButtons]="actionButtons"></app-fc-action-bar>
+  <div class="body h-full w-full overflow-y-auto text-xs py-5" *ngIf="!loading">
+    <form [formGroup]="userForm" class="grid w-full gap-3 lg:grid-cols-2">
+      <fc-input-text
+        inputId="name"
+        formControlName="name"
+        title="Name"
+        placeholder="Enter Name"></fc-input-text>
+      <label
+        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
+        for="email">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Email
+        </p>
+        <p>
+          {{ user.email }}
+        </p>
+      </label>
+      <fc-input-text
+        inputId="phone_no"
+        formControlName="phone_no"
+        title="Phone Number"
+        placeholder="Enter Phone Number"></fc-input-text>
+      <fc-input-text
+        inputId="address"
+        formControlName="address"
+        title="Address"
+        placeholder="Enter Address"></fc-input-text>
+      <label
+        formGroupName="staff"
+        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low lg:col-span-2"
+        for="note">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Note
+        </p>
+        <textarea
+          class="m-0 h-24 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+          type="text"
+          formControlName="note"
+          id="note"
+          placeholder="Enter Your Note"></textarea>
+      </label>
+    </form>
+  </div>
+  <div class="py-[20vh] text-center" *ngIf="loading">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <p>Loading . . .</p>
+  </div>
+</div>

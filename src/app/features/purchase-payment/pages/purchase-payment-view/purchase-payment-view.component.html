@@ -1,0 +1,145 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar
+    [isHasBackButton]="true"
+    [actionButtons]="actionButtons"
+    [filterButtons]="filterButtons"></app-fc-action-bar>
+  <div class="body h-full w-full overflow-y-auto text-xs py-5" *ngIf="!loading">
+    <form
+      [formGroup]="purchasePaymentForm"
+      class="body h-full w-full overflow-y-auto text-xs @container">
+      <div class="mx-auto mt-2 grid w-full gap-3 grid-cols-1 @xl:grid-cols-2">
+        <fc-select-option
+          [options]="paymentMethods"
+          [optionValue]="'value'"
+          [optionLable]="'label'"
+          formControlName="payment_method"
+          title="Payment Method"
+          [desktopView]="'overlay'"
+          [mobileView]="'dialog'"
+          placeholder="Select Payment Method" />
+        <div
+          class="form-input items-center flex cursor-pointer dark:hover:bg-dark-lowest rounded-lg bg-light-lowest p-2 dark:bg-dark-low">
+          <div class="flex flex-col flex-1">
+            <p
+              class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+              Supplier
+            </p>
+            <p *ngIf="purchasePaymentForm.value.supplier" class="text-xs">
+              {{ purchasePaymentForm.value.supplier.name }}
+            </p>
+            <p
+              *ngIf="!purchasePaymentForm.value.supplier"
+              class="text-xs dark:text-gray-400">
+              Select Supplier
+            </p>
+          </div>
+        </div>
+        <fc-datepicker title="Date" formControlName="date" />
+      </div>
+      <!-- Purchase Payment Detail -->
+      <div
+        class="w-full grid gap-3 mt-6"
+        (change)="setPaymentSummaryVisibility()">
+        <div class="flex-1">
+          <div class="flex mb-3 items-center justify-between">
+            <p>Purchase Payment Allocations</p>
+            <div *ngIf="purchasePayment.status == 0">
+              <button
+                type="button"
+                (click)="addPurchasePaymentDetail()"
+                class="flex items-center gap-1 rounded-md text-white text-xs">
+                <fa-icon [fixedWidth]="true" [icon]="faPlus"></fa-icon>
+                <p>Add Item</p>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="purchasePaymentDetails.value.length" class="grid gap-2">
+            <ng-container
+              *ngFor="
+                let purchasePaymentDetail of purchasePaymentDetails.value;
+                let i = index
+              ">
+              <div class="@container">
+                <div
+                  class="fc-animate-translate-up gap-5 grid grid-cols-1 items-center justify-between rounded-md border border-light-low bg-light-low p-3 hover:border-primary-light dark:border-dark-low dark:bg-dark-low hover:dark:border-primary-light @lg:flex">
+                  <div class="@xl:flex-1 space-y-1">
+                    <p>
+                      {{ purchasePaymentDetail.purchase_invoice.invoice_no }}
+                    </p>
+                  </div>
+                  <div class="@xl:flex-1 space-y-1 text-right">
+                    <p>
+                      {{ purchasePaymentDetail.amount_allocated | fcCurrency }}
+                    </p>
+                  </div>
+                  <div
+                    class="flex justify-end gap-2"
+                    *ngIf="purchasePayment.status == 0">
+                    <button
+                      (click)="editPurchasePaymentDetail(i)"
+                      type="button"
+                      class="flex rounded-lg p-2 btn-high">
+                      <fa-icon class="text-xs" [icon]="faPencil"></fa-icon>
+                    </button>
+                    <button
+                      (click)="deletePurchasePaymentDetail(i)"
+                      type="button"
+                      class="flex rounded-lg p-2 btn-high">
+                      <fa-icon class="text-xs" [icon]="faTrash"></fa-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <div class="flex justify-end @containe">
+              <div
+                class="w-full rounded-md @xl:w-96 bg-light-low p-3 dark:bg-dark-low">
+                <div
+                  class="w-full border rounded-lg border-light-lowest dark:border-dark-lowest">
+                  <fc-input-text
+                    [title]="'Note'"
+                    [placeholder]="'Enter your note here'"
+                    formControlName="note">
+                  </fc-input-text>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-end @container" #purchasePaymentSummary>
+              <div
+                class="w-full rounded-md @xl:w-96 bg-light-low p-3 dark:bg-dark-low">
+                <div
+                  class="mt-5 px-1 font-bold flex justify-between items-center">
+                  <p class="">Grand Total</p>
+                  <p>{{ grandTotalPrice | fcCurrency }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            *ngIf="!purchasePaymentDetails.value.length"
+            class="text-center h-10 w-full flex items-center justify-center">
+            No Purchase Payment Allocations Data
+          </div>
+        </div>
+      </div>
+      <div
+        (click)="scrollToBottom()"
+        #stickyPurchasePaymentSummary
+        class="w-full cursor-pointer mt-2 left-0 bottom-0 sticky rounded-md bg-light-low p-3 gap-4 flex items-center justify-between dark:bg-dark-low transition duration-300 ease-in-out border border-light-lowest dark:border-dark-lowest"
+        [ngClass]="{
+          invisible: !isShowPaymentSummary
+        }">
+        <div class="w-full justify-end flex items-center gap-2">
+          <div class="text-right">
+            <p class="text-sm">Grand Total</p>
+            <p class="text-lg font-bold">{{ grandTotalPrice | fcCurrency }}</p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="py-[20vh] text-center" *ngIf="loading">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <p>Loading . . .</p>
+  </div>
+</div>

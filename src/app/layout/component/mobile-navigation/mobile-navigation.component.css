@@ -1,0 +1,3 @@
+p-sidebar ::ng-deep .p-sidebar-content {
+  @apply pb-24;
+}

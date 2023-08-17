@@ -1,0 +1,30 @@
+<div
+  class="fc-drawer fixed h-screen w-screen flex top-0 left-full transition ease-in-out"
+  [ngClass]="
+  {
+    'translate-x-0  duration-1000': !isShowDrawer && direction == 'right',
+    '-translate-x-full duration-500': isShowDrawer && direction == 'right',
+  }
+  ">
+  <div class="flex-1" (click)="hide()"></div>
+  <div
+    class="main-menu right-0 flex top-0 h-screen flex-col"
+    [ngClass]="{
+      ' w-screen': screen == 'full',
+      'w-full md:w-[300px]': screen == 'md'
+    }">
+    <div class="overflow-y-auto text-primary-darkest h-full w-full">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
+<div *ngIf="isShowDrawer" class="fixed bottom-0 left-0 z-[60] w-full">
+  <ng-content select="[footer]"></ng-content>
+</div>
+<!--       '-translate-y-[100vh]': isShowDrawer && direction == 'bottom',
+      'translate-y-[100vh]': isShowDrawer && direction == 'top',
+      '-translate-x-[100vh]': isShowDrawer && direction == 'left',
+      'translate-x-[100vh]': isShowDrawer && direction == 'right',
+      'left-0': isShowDrawer && direction == 'bottom',
+      'right-0': isShowDrawer && direction == 'top',
+      'translate-0': !isShowDrawer, -->

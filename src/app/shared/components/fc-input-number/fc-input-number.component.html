@@ -1,0 +1,38 @@
+<label
+  class="form-input flex border items-center gap-2 border-transparent rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest"
+  [ngClass]="{ 'opacity-50': disabled }"
+  for="inputNumber">
+  <div class="flex-col flex-1 flex">
+    <p
+      class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+      {{ title }}
+    </p>
+    <!-- <p-inputNumber
+      inputId="inputNumber"
+      class="m-0 w-full bg-light-lowest [&_input]:w-full [&_input]:p-0 text-xs ring-0 [&_input:focus]:outline-none [&_input:focus]:ring-0 dark:bg-dark-low"
+      styleClass="w-full border-none outline-none ring-0 [box-shadow:none] [&_input:hover]:border-transparent"
+      [(ngModel)]="value">
+    </p-inputNumber> -->
+    <input
+      #fcNumber
+      class="m-0 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+      type="number"
+      id="fcNumber"
+      [(ngModel)]="value"
+      (input)="onValueChange(value)"
+      [min]="min"
+      [max]="max"
+      [disabled]="disabled"
+      [placeholder]="placeholder" />
+  </div>
+  <button
+    type="button"
+    (click)="onRemoveValue()"
+    *ngIf="value != null && value != 0 && !disabled">
+    <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+  </button>
+  <fc-calculator
+    *ngIf="!disabled"
+    (onSubmit)="onValueChange($event)"
+    [target]="fcNumber"></fc-calculator>
+</label>

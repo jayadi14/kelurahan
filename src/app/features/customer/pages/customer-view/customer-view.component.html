@@ -1,0 +1,75 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar
+    *ngIf="!quickView"
+    [isHasBackButton]="true"
+    [actionButtons]="actionButtons"></app-fc-action-bar>
+  <div
+    class="body h-full w-full overflow-y-auto text-xs"
+    [ngClass]="{ 'py-0': quickView, 'py-5': !quickView }"
+    *ngIf="!loading">
+    <form [formGroup]="customerForm" class="grid w-full gap-3 lg:grid-cols-2">
+      <label
+        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
+        for="name">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Name
+        </p>
+        <p>
+          {{ customer.user.name }}
+        </p>
+      </label>
+      <label
+        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
+        for="email">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Email
+        </p>
+        <p>
+          {{ customer.user.email }}
+        </p>
+      </label>
+      <label
+        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
+        for="phone_no">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Phone Number
+        </p>
+        <p>
+          {{ customer.user.phone_no }}
+        </p>
+      </label>
+      <label
+        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
+        for="address">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Address
+        </p>
+        <p>
+          {{ customer.user.address }}
+        </p>
+      </label>
+      <label
+        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low lg:col-span-2"
+        for="note">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Note
+        </p>
+        <textarea
+          class="m-0 h-24 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+          type="text"
+          formControlName="note"
+          id="note"
+          placeholder="Enter Your Note"></textarea>
+      </label>
+    </form>
+  </div>
+  <div class="py-[20vh] text-center" *ngIf="loading">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <p>Loading . . .</p>
+  </div>
+</div>

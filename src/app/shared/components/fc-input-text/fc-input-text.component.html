@@ -1,0 +1,29 @@
+<label
+  class="form-input flex border items-center gap-2 border-transparent rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest"
+  [for]="inputId"
+  [ngClass]="{
+    'border-red-400': isInvalid
+  }">
+  <div class="flex-col flex-1 flex">
+    <p
+      class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+      {{ title }}
+    </p>
+    <input
+      fcNumber
+      class="m-0 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+      [type]="type"
+      [id]="inputId"
+      [(ngModel)]="value"
+      (input)="onValueChange(value)"
+      [disabled]="disabled"
+      [readonly]="readonly"
+      [placeholder]="placeholder" />
+  </div>
+  <button
+    type="button"
+    (click)="onRemoveValue()"
+    *ngIf="value != null && value != '' && !disabled">
+    <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+  </button>
+</label>

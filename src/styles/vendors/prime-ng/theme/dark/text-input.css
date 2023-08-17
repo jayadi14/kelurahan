@@ -1,0 +1,98 @@
+@tailwind components;
+@tailwind utilities;
+.p-button.p-button-xs {
+  font-size: 0.81rem;
+  padding: 0.36rem 0.72rem;
+}
+.p-button.p-button-xs.p-button-icon-only {
+  width: 2rem;
+  padding: 0.36rem;
+}
+
+/* .card-list, .card-list .p-card.p-component {
+  @apply h-full;
+} */
+.card-list,
+.card-list .p-card.p-component .p-card-content {
+  @apply p-0;
+}
+.p-card-secondary .p-card {
+  @apply rounded-2xl bg-sky-900;
+}
+.p-card-header img {
+  @apply rounded-2xl;
+}
+.p-inputtext {
+  @apply text-xs;
+}
+.p-inputtext.p-inputtext-sm {
+  @apply py-2;
+}
+
+/* prime dropdown */
+.dark .p-dropdown {
+  @apply border-dark-low bg-dark-low text-slate-200;
+}
+.dark .p-dropdown .p-dropdown-label {
+  @apply text-slate-200;
+}
+.dark .p-dropdown-panel {
+  @apply bg-dark-low text-slate-200;
+}
+.dark .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  @apply text-slate-200;
+}
+
+.dark .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  @apply text-slate-800;
+}
+
+.dark .p-inputgroup-addon:last-child,
+.dark .p-inputgroup button:last-child,
+.dark .p-inputgroup input:last-child,
+.dark .p-inputgroup > .p-inputwrapper:last-child > .p-component,
+.dark .p-inputgroup > .p-inputwrapper:last-child > .p-component > .p-inputtext,
+.dark .p-calendar .p-inputtext {
+  @apply border-dark-low bg-dark-low text-slate-200;
+}
+.dark .p-inputgroup-addon {
+  @apply border-dark-low bg-dark-low text-slate-200;
+}
+.dark .p-inputtext {
+  @apply border-dark-low bg-dark-low text-slate-200 focus:ring-red-400;
+}
+.p-inputtext:enabled:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 1px #414246;
+  border-color: #414246;
+}
+
+.dark input:-webkit-autofill,
+.dark textarea:-webkit-autofill,
+.dark select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #1f2125 inset !important;
+  -webkit-text-fill-color: rgb(226 232 240 / var(--tw-text-opacity)) !important;
+  border-color: rgb(100 116 139 / var(--tw-border-opacity)) !important;
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity)) !important;
+}
+
+.p-inputnumber-input.p-inputtext {
+  @apply rounded-none bg-transparent border-transparent [box-shadow:none];
+}
+.p-inputNumber .p-inputnumber-input.p-inputtext {
+  @apply p-0 rounded-none;
+}
+.p-inputnumber-input.p-inputtext:enabled:hover {
+  @apply border-transparent;
+}
+
+.p-inputnumber-input.p-inputtext:enabled:focus {
+  @apply [box-shadow:none] border-transparent;
+}
+.p-inputtext:enabled:hover {
+  @apply [box-shadow:none] border-gray-400 dark:border-dark-low;
+}
+.p-inputtext:enabled:focus {
+  @apply [box-shadow:none] border-gray-400 dark:border-dark-low;
+}

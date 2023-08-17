@@ -1,0 +1,64 @@
+<div class="img relative w-full h-full">
+  <img
+    class="object-contain h-full w-full"
+    [ngClass]="{
+      'animate-pulse bg-dark-lowest': loading,
+    }"
+    (error)="setErrorImg()"
+    (load)="loadSuccess()"
+    [src]="isError ? srcError : src"
+    [alt]="alt" />
+  <div
+    class="absolute top-0 left-0 h-full w-full z-10 flex justify-center items-center group"
+    [ngClass]="{
+      'hover:dark:bg-dark-high/20 hover:[backdrop-filter:blur(3px)] cursor-pointer':
+        preview || isError,
+    }"
+    (click)="handleClick()">
+    <p *ngIf="isError && !loading" class="group-hover:block hidden">
+      retry
+      <fa-icon [icon]="faRefresh" [fixedWidth]="true"></fa-icon>
+    </p>
+    <p *ngIf="!isError && !loading && preview" class="group-hover:block hidden">
+      view
+      <fa-icon [icon]="faArrowUpRightFromSquare" [fixedWidth]="true"></fa-icon>
+    </p>
+    <p *ngIf="loading" class="group-hover:block hidden">loading</p>
+  </div>
+  <div class="absolute top-0.5 right-0.5 z-20">
+    <ng-content select=".action-buttons"> </ng-content>
+  </div>
+</div>
+
+<p-dialog
+  class="p-0"
+  #imageDialog
+  [showHeader]="false"
+  [(visible)]="showPreview"
+  [modal]="true"
+  [style]="{ width: '100vw', height: '100vh' }"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="false"
+  appendTo="body">
+  <div class="h-full w-full flex flex-col relative">
+    <div
+      class="preview-action-buttons flex justify-end items-center absolute top-0 left-0 w-full z-20 p-3">
+      <button
+        class="rounded-full p-2 hover:bg-light-low/50 dark:hover:bg-dark-lowest/50 transition duration-100 ease-in-out"
+        (click)="showPreview = false">
+        <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+      </button>
+    </div>
+    <div class="relative flex-1 w-full flex items-center justify-center">
+      <img
+        class="object-contain aspect-square w-full max-w-[600px] relative z-10"
+        [src]="src"
+        [alt]="alt"
+        loading="lazy" />
+      <div
+        class="absolute top-0 left-0 h-full w-full"
+        (click)="showPreview = false"></div>
+    </div>
+  </div>
+</p-dialog>

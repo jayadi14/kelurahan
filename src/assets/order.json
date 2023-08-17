@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "username": "Gawr Gura",
+      "item": "Summer Wings",
+      "harga": 1000,
+      "qty": 1
+    },
+    {
+      "id": 2,
+      "username": "Kobo Kanaeru",
+      "item": "Summer Tail",
+      "harga": 1500,
+      "qty": 2
+    },
+    {
+      "id": 3,
+      "username": "Vestia Zeta",
+      "item": "Summer Tattoo",
+      "harga": 2500,
+      "qty": 3
+    }
+  ]
+}

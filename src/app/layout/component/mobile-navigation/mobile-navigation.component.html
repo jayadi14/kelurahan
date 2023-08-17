@@ -1,0 +1,215 @@
+<div
+  class="fc-mobile-nav fixed bottom-0 left-1/2 mx-auto w-full -translate-x-1/2 rounded-2xl rounded-b-none bg-white shadow-md dark:bg-dark-low xs:px-6 md:hidden">
+  <ul
+    class="flex h-16 items-center justify-between text-center text-xl text-dark-low dark:text-slate-300">
+    <div class="text flex w-2/5 items-center justify-between">
+      <li
+        class="flex h-full w-1/2 items-center justify-center hover:text-primary-light dark:hover:text-primary-dark">
+        <div routerLink="/dashboard">
+          <a (click)="showDrawer = false">
+            <fa-icon [icon]="faTachometerAlt"></fa-icon
+          ></a>
+        </div>
+      </li>
+      <li
+        routerLink="/product"
+        class="flex h-full w-1/2 items-center justify-center hover:text-primary-light dark:hover:text-primary-dark">
+        <div>
+          <a (click)="showDrawer = false">
+            <fa-icon [icon]="faShirt"></fa-icon
+          ></a>
+        </div>
+      </li>
+    </div>
+    <li
+      class="flex h-full w-1/5 max-w-[64px] flex-none -translate-y-6 items-center justify-center rounded-full border-4 border-dark-low bg-white shadow-xl hover:text-primary-light dark:bg-dark-high dark:hover:text-primary-dark"
+      (click)="showDrawer = !showDrawer">
+      <img
+        *ngIf="darkMode.isDark"
+        class="m-auto h-9"
+        src="assets/images/logo/liszthoven-logo-white.webp"
+        alt="Liszthoven" />
+      <img
+        *ngIf="!darkMode.isDark"
+        class="m-auto h-9"
+        src="assets/images/logo/liszthoven-logo.webp"
+        alt="Liszthoven" />
+    </li>
+    <div class="flex w-2/5 items-center justify-between">
+      <li
+        routerLink="/order/list/all"
+        class="flex h-full w-1/2 items-center justify-center hover:text-primary-light dark:hover:text-primary-dark">
+        <div>
+          <a (click)="showDrawer = false"
+            ><fa-icon [icon]="faReceipt"></fa-icon
+          ></a>
+        </div>
+      </li>
+      <li
+        routerLink="/productrequest/list/all"
+        class="flex h-full w-1/2 items-center justify-center hover:text-primary-light dark:hover:text-primary-dark">
+        <div>
+          <a (click)="showDrawer = false"
+            ><fa-icon [icon]="faBoxOpen"></fa-icon
+          ></a>
+        </div>
+      </li>
+    </div>
+  </ul>
+</div>
+
+<div
+  [ngClass]="showDrawer ? 'translate-y-0' : 'translate-y-[100vh]'"
+  class="fixed top-0 z-20 h-screen w-screen space-y-2 overflow-y-auto bg-slate-100 p-4 pb-[100px] transition duration-500 ease-in-out dark:bg-dark-low md:hidden">
+  <div class="flex items-center">
+    <h1 class="flex-1 font-medium">Main Menu</h1>
+    <div>
+      <button
+        class="fc-animate-translate-up flex items-center gap-2 rounded-md bg-slate-200 p-3 text-sm text-slate-700 dark:bg-dark-highest dark:text-slate-300 md:px-4 md:py-2"
+        (click)="showDrawer = false">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+  </div>
+  <div class="grid gap-4">
+    <div
+      class="flex flex-shrink-0 rounded-md bg-slate-200 p-4 dark:bg-dark-high dark:text-slate-300">
+      <a class="group block w-full flex-shrink-0">
+        <div class="flex items-center">
+          <div>
+            <img
+              class="inline-block h-12 w-12 rounded-full xs:h-16 xs:w-16"
+              src="assets/images/placeholder/placeholder_small.jpg"
+              alt="" />
+          </div>
+          <div class="ml-3 flex-1">
+            <p class="font-medium">
+              {{ user.name }}
+            </p>
+            <p class="text-xs font-medium">Admin</p>
+          </div>
+          <div
+            [routerLink]="['/notification']"
+            [ngClass]="{
+              'text-dark-high dark:text-slate-100':
+                (!darkMode.isDark && darkMode.mode == 'theme') ||
+                (darkMode.isDark && darkMode.mode == 'theme')
+            }"
+            class="relative mr-3 flex-none cursor-pointer hover:text-slate-500 dark:text-slate-200"></div>
+          <div class="relative py-5 text-xl xs:px-2 xs:text-2xl">
+            <div
+              (click)="darkModeDropdown.toggle($event)"
+              class="cursor-pointer"
+              [ngClass]="{
+                'text-dark-high dark:text-slate-100':
+                  (!darkMode.isDark && darkMode.mode == 'theme') ||
+                  (darkMode.isDark && darkMode.mode == 'theme')
+              }">
+              <fa-icon
+                *ngIf="darkMode.mode != 'system' && darkMode.isDark"
+                [icon]="faMoon"></fa-icon>
+              <fa-icon
+                *ngIf="darkMode.mode != 'system' && !darkMode.isDark"
+                [icon]="faSun"></fa-icon>
+              <fa-icon
+                *ngIf="darkMode.mode == 'system'"
+                [icon]="faDisplay"></fa-icon>
+            </div>
+            <fc-dropdown
+              #darkModeDropdown
+              fcStyleClass="cursor-pointer fc-dropdown right-0 min-w-[150px]">
+              <div
+                class="grid divide-y rounded-md border-t bg-white font-medium shadow-xl dark:divide-y-0 dark:border-slate-600 dark:bg-dark-low dark:text-slate-500">
+                <div
+                  class="flex items-center gap-2 px-4 py-2 hover:bg-slate-100 dark:hover:bg-dark-highest"
+                  [ngClass]="{
+                    'text-sky-600 dark:text-slate-100':
+                      !darkMode.isDark && darkMode.mode == 'theme'
+                  }"
+                  (click)="darkModeDropdown.hide(); changeDarkMode('light')">
+                  <fa-icon [icon]="faSun"></fa-icon> Light
+                </div>
+                <div
+                  class="flex items-center gap-2 px-4 py-2 hover:bg-slate-100 dark:hover:bg-dark-highest"
+                  [ngClass]="{
+                    'text-sky-600 dark:text-slate-100':
+                      darkMode.isDark && darkMode.mode == 'theme'
+                  }"
+                  (click)="darkModeDropdown.hide(); changeDarkMode('dark')">
+                  <fa-icon [icon]="faMoon"></fa-icon> Dark
+                </div>
+                <div
+                  class="flex items-center gap-2 px-4 py-2 hover:bg-slate-100 dark:hover:bg-dark-highest"
+                  [ngClass]="{
+                    'text-sky-600 dark:text-slate-100':
+                      darkMode.mode == 'system'
+                  }"
+                  (click)="darkModeDropdown.hide(); changeDarkMode('system')">
+                  <fa-icon [icon]="faDisplay"></fa-icon> System
+                </div>
+              </div>
+            </fc-dropdown>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <ng-container *ngFor="let mainMenu of mainMenus">
+        <ng-container *ngIf="!mainMenu.parentRoute">
+          <button
+            type="button"
+            class="flex h-20 items-center rounded-lg border bg-slate-200 text-center shadow-md dark:border-slate-500 dark:bg-dark-highest/70"
+            routerLinkActive="bg-slate-100 text-slate-200 dark:text-primary-dark font-bold bg-primary-light dark:bg-primary-dark "
+            [routerLink]="mainMenu.route"
+            (click)="showDrawer = false">
+            <span class="mx-auto">
+              {{ mainMenu.name }}
+            </span>
+          </button>
+        </ng-container>
+        <ng-container *ngIf="mainMenu.parentRoute">
+          <button
+            type="button"
+            class="flex h-20 items-center rounded-lg border bg-slate-200 text-center shadow-md dark:border-slate-500 dark:bg-dark-highest/70"
+            routerLinkActive="bg-slate-100 text-slate-200 dark:text-primary-dark font-bold bg-primary-light dark:bg-primary-dark "
+            [routerLink]="subMenus.route"
+            *ngFor="let subMenus of mainMenu.subMenus"
+            (click)="showDrawer = false">
+            <span class="mx-auto">
+              {{ subMenus.name }}
+            </span>
+          </button>
+        </ng-container>
+      </ng-container>
+    </div>
+    <ng-container *ngFor="let mainMenu of categoryMenus">
+      <div class="grid grid-cols-2 gap-2" *ngIf="mainMenu.isAllowed">
+        <span class="col-span-2">
+          {{ mainMenu.name }}
+        </span>
+        <ng-container *ngFor="let subMenu of mainMenu.subMenus">
+          <button
+            *ngIf="subMenu.isAllowed"
+            type="button"
+            class="flex h-20 items-center rounded-lg border bg-slate-200 text-center shadow-md dark:border-slate-500 dark:bg-dark-highest/70"
+            routerLinkActive="bg-slate-100 text-slate-200 dark:text-custom font-bold bg-primary-light dark:bg-primary-dark"
+            [routerLink]="subMenu.route"
+            (click)="showDrawer = false">
+            <span class="mx-auto">
+              {{ subMenu.name }}
+            </span>
+          </button>
+        </ng-container>
+      </div>
+    </ng-container>
+    <div class="w-full">
+      <button
+        type="buton"
+        (click)="logout()"
+        class="btn-red items-bottom fc-animate-translate-up w-full rounded-md px-6 py-3 text-left text-lg">
+        <fa-icon [icon]="faArrowRightFromBracket"></fa-icon>
+        <span class="ml-2">Keluar</span>
+      </button>
+    </div>
+  </div>
+</div>

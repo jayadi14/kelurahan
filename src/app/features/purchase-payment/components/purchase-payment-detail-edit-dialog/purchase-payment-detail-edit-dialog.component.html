@@ -1,0 +1,37 @@
+<div
+  class="space-y-3 rounded-lg bg-light-highest p-3 backdrop-blur-sm dark:bg-dark-highest">
+  <div class="flex items-center">
+    <h3 class="flex-1 text-sm font-medium">{{ title }}</h3>
+    <button
+      class="rounded-md p-2 hover:bg-light-lowest hover:dark:bg-dark-lowest"
+      (click)="onClose()">
+      <fa-icon [fixedWidth]="true" [icon]="faTimes"></fa-icon>
+    </button>
+  </div>
+  <form [formGroup]="purchasePaymentDetailForm" class="grid gap-3">
+    <!-- Select Purchase Invoice -->
+    <div
+      class="form-input items-center flex cursor-pointer dark:hover:bg-dark-lowest rounded-lg bg-light-lowest p-2 dark:bg-dark-low">
+      <div class="flex flex-col flex-1">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Purchase Invoice
+        </p>
+        <p class="text-xs">
+          {{ purchasePaymentDetailForm.value.purchase_invoice.invoice_no }}
+        </p>
+      </div>
+    </div>
+    <fc-input-number
+      formControlName="amount_allocated"
+      title="Amount Allocated" />
+    <div class="flex items-center justify-end gap-3 pt-3">
+      <button
+        type="button"
+        class="fc-animate-translate-up flex items-center gap-2 rounded-md bg-light-lowest p-2 text-sm dark:bg-dark-lowest"
+        (click)="submit()">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>

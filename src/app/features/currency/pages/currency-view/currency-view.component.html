@@ -1,0 +1,83 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar
+    [isHasBackButton]="true"
+    [actionButtons]="actionButtons"
+    [filterButtons]="filterButtons"></app-fc-action-bar>
+  <div class="body h-full w-full overflow-y-auto text-xs @container">
+    <form
+      class="mx-auto mt-2 grid w-full gap-3 @xl:grid-cols-2"
+      [formGroup]="currencyForm">
+      <label
+        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
+        for="code">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Code
+        </p>
+        <input
+          class="m-0 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+          type="text"
+          formControlName="code"
+          id="code"
+          placeholder="Enter Your Currency Code" />
+      </label>
+      <label
+        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
+        for="name">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Name
+        </p>
+        <input
+          class="m-0 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+          type="text"
+          formControlName="name"
+          id="name"
+          placeholder="Enter Your Name" />
+      </label>
+    </form>
+    <div>
+      <div class="flex items-center w-full mt-2">
+        <h3 class="flex-1">Exchange rate</h3>
+        <button
+          type="button"
+          class="flex gap-1 rounded-lg p-2 hover:bg-light-lowest dark:hover:bg-dark-lowest"
+          (click)="onAddExchangeRate()">
+          <fa-icon [icon]="faPlus"></fa-icon>
+          Add
+        </button>
+      </div>
+      <div
+        class="space-y-2 overflow-y-auto transition-all duration-700 ease-in-out @container w-full py-2"
+        *ngIf="!loading">
+        <ng-container
+          *ngFor="let exchange_rate of currency.exchange_rates; let i = index">
+          <div
+            class="fc-animate-translate-up grid cursor-pointer grid-cols-1 items-center justify-between rounded-md border border-light-low bg-light-low p-3 hover:border-primary-light @lg:flex dark:border-dark-low dark:bg-dark-low hover:dark:border-primary-light">
+            <div class="flex-1 gap-3">
+              <p
+                class="text-2xs font-medium text-dark-lowest dark:text-white/60">
+                {{ exchange_rate.date | date : 'dd MMM yyyy' }}
+              </p>
+              <p class="text-xs">{{ exchange_rate.rate | fcCurrency }}</p>
+            </div>
+            <div class="flex w-full gap-2 justify-end @lg:w-[150px]">
+              <button
+                type="button"
+                class="btn btn-high"
+                (click)="onDeleteExchangeRate(exchange_rate, i)">
+                <fa-icon [fixedWidth]="true" [icon]="faTrash"></fa-icon>
+              </button>
+              <button
+                type="button"
+                class="btn btn-high"
+                (click)="onEditExchangeRate(exchange_rate, i)">
+                <fa-icon [fixedWidth]="true" [icon]="faPencil"></fa-icon>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div
+  class="space-y-3 rounded-lg bg-light-highest p-3 backdrop-blur-sm dark:bg-dark-highest">
+  <div class="flex items-center">
+    <h3 class="flex-1 text-sm font-medium">{{ title }}</h3>
+    <button
+      class="rounded-md p-2 hover:bg-light-lowest hover:dark:bg-dark-lowest"
+      (click)="onClose()">
+      <fa-icon [fixedWidth]="true" [icon]="faTimes"></fa-icon>
+    </button>
+  </div>
+  <form [formGroup]="productCategoryForm" class="space-y-3">
+    <label
+      class="form-input border border-transparent flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest"
+      for="name">
+      <p
+        class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+        Category Name
+      </p>
+      <input
+        class="m-0 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+        type="text"
+        id="name"
+        formControlName="name"
+        placeholder="Enter Category Name" />
+    </label>
+    <div class="flex gap-2 justify-end items-center">
+      <button
+        type="button"
+        class="flex gap-1 rounded-lg p-2 text-white hover:bg-emerald-600 dark:hover:bg-emerald-600 bg-emerald-500 dark:bg-emerald-700 text-2xs"
+        (click)="submit()"
+        [ngClass]="{ 'opacity-50': loading }"
+        [disabled]="loading">
+        <fa-icon
+          [icon]="faSpinner"
+          [spin]="true"
+          [fixedWidth]="true"
+          *ngIf="loading"></fa-icon>
+        Submit
+      </button>
+    </div>
+  </form>
+</div>

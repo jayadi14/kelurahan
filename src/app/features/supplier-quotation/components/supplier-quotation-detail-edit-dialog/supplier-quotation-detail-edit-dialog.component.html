@@ -1,0 +1,107 @@
+<div
+  class="space-y-3 rounded-lg bg-light-highest p-3 backdrop-blur-sm dark:bg-dark-highest">
+  <div class="flex items-center">
+    <h3 class="flex-1 text-sm font-medium">{{ title }}</h3>
+    <button
+      class="rounded-md p-2 hover:bg-light-lowest hover:dark:bg-dark-lowest"
+      (click)="onClose()">
+      <fa-icon [fixedWidth]="true" [icon]="faTimes"></fa-icon>
+    </button>
+  </div>
+  <form [formGroup]="supplierQuotationDetailForm" class="grid gap-3">
+    <ng-container *ngIf="!supplierQuotationDetailForm.value.product">
+      <h2 class="text-sm">Select Product</h2>
+      <div class="search mb-4 flex">
+        <span class="p-input-icon-left w-full">
+          <input
+            pInputText
+            type="text"
+            class="p-input h-8 w-full text-xs"
+            placeholder="Search Product"
+            [(ngModel)]="searchQuery"
+            fcDebounceKeyup
+            [debounceTime]="900"
+            (onEvent)="search()"
+            [ngModelOptions]="{ standalone: true }" />
+          <i class="pi pi-search"></i>
+        </span>
+      </div>
+      <div
+        class="customer-list h-[400px] overflow-auto rounded dark:bg-dark-high">
+        <div class="space-y-2" *ngIf="!loading">
+          <ng-container *ngFor="let product of products">
+            <button
+              [disabled]="product.isExist == true"
+              [ngClass]="{
+                'opacity-20 pointer-events-none': product.isExist == true
+              }"
+              class="grid w-full cursor-pointer items-center gap-2 rounded-md border border-light-low bg-light-low p-2 text-left text-xs hover:border-primary-light dark:border-dark-low dark:bg-dark-low hover:dark:border-primary-light"
+              (click)="onSelectProduct(product)">
+              <p>{{ product.name }}</p>
+            </button>
+          </ng-container>
+        </div>
+        <div class="py-[15vh] text-center" *ngIf="!products.length && !loading">
+          <img
+            class="object-cover mx-auto w-32 rounded-lg"
+            src="assets/images/bg/empty.png" />
+          <p>No Product Data</p>
+        </div>
+        <div class="py-[20vh] text-center" *ngIf="loading">
+          <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+          <p>Loading . . .</p>
+        </div>
+      </div>
+      <div>
+        <fc-pagination
+          [rows]="rows"
+          [page]="page"
+          [totalPages]="totalPages"
+          [totalRecords]="totalRecords"
+          (onPageUpdate)="onPageUpdate($event)"></fc-pagination>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="supplierQuotationDetailForm.value.product">
+      <div
+        class="form-input flex border items-center gap-2 border-transparent rounded-lg bg-light-lowest p-2 dark:bg-dark-low">
+        <div class="flex-col flex-1 flex">
+          <p
+            class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+            Selected Product
+          </p>
+          <p class="text-xs">
+            {{ supplierQuotationDetailForm.value.product.name }}
+          </p>
+        </div>
+        <button type="button" (click)="onRemoveProduct()">
+          <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+        </button>
+      </div>
+      <fc-input-number
+        title="Quotation Quantity"
+        formControlName="quantity"></fc-input-number>
+      <fc-input-number
+        title="Price Per Unit"
+        formControlName="price_per_unit"></fc-input-number>
+      <div class="flex gap-2 justify-end items-center">
+        <button
+          type="button"
+          [ngClass]="
+            isSubmitAllowed()
+              ? 'opacity-100'
+              : 'opacity-25'
+          "
+          class="fc-animate-translate-up flex items-center gap-2 rounded-md bg-light-lowest p-2 text-sm dark:bg-dark-lowest"
+          (click)="submit()"
+          [disabled]="!isSubmitAllowed()">
+          <fa-icon
+            [icon]="faSpinner"
+            [spin]="true"
+            [fixedWidth]="true"
+            *ngIf="loadingButton"></fa-icon>
+          Submit
+        </button>
+      </div>
+    </ng-container>
+  </form>
+</div>

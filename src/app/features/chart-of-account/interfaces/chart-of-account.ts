@@ -1,0 +1,32 @@
+export interface ChartOfAccount {
+  id: any;
+  name: string;
+  number: string;
+  description: any;
+  archive: boolean;
+  lock: boolean;
+  system_or_product_link: boolean;
+  is_parent: boolean;
+  indent: number;
+  currency_code: any;
+  category: string;
+  category_id: number;
+  balance: string;
+  balance_amount: number;
+  parent_id: any;
+  created_at: string;
+  updated_at: string;
+  deleted_at: any;
+  custom_id: any;
+  tax_id: any;
+  tax_name: any;
+  bank_account_no: any;
+  bank_name: any;
+  is_company_default_account: boolean;
+  can_destroy_account: boolean;
+  can_show_account: boolean;
+  can_open_company_tax: boolean;
+  currency_symbol: any;
+  children: any;
+  parent: any;
+}

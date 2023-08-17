@@ -1,0 +1,166 @@
+<div class="space-y-3 @container">
+  <h1 class="text-2xl">Template</h1>
+  <form [formGroup]="form" class="grid gap-3 @md:grid-cols-2 @xl:grid-cols-3">
+    <fc-input-text
+      [title]="'Input Text'"
+      formControlName="text"
+      (click)="submit()"></fc-input-text>
+    <fc-select-option
+      #optionExample1
+      [options]="options"
+      [optionValue]="'id'"
+      [optionLable]="'name'"
+      formControlName="name"
+      title="Select your option"
+      [desktopView]="'overlay'"
+      [mobileView]="'dialog'"
+      [placeholder]="'Placeholder here'"
+      [searchable]="true">
+    </fc-select-option>
+    <fc-datepicker title="Date" formControlName="date"></fc-datepicker>
+    <fc-datepicker
+      title="Date Range"
+      formControlName="dateRange"
+      [type]="'range'"></fc-datepicker>
+    <label
+      class="form-input border border-transparent flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest"
+      for="exampleInputNumber">
+      <p
+        class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+        Input Number
+      </p>
+      <p-inputNumber
+        inputId="exampleInputNumber"
+        class="m-0 w-full bg-light-lowest [&_input]:w-full [&_input]:p-0 text-xs ring-0 [&_input:focus]:outline-none [&_input:focus]:ring-0 dark:bg-dark-low"
+        styleClass="w-full border-none outline-none ring-0 [box-shadow:none] [&_input:hover]:border-transparent"
+        formControlName="number">
+      </p-inputNumber>
+    </label>
+    <fc-file-input [multiple]="true" (onInput)="addMultipleImage($event)">
+      <div
+        class="form-input border border-transparent flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Multiple Image/file
+        </p>
+        <p class="text-xs line-clamp-1">
+          <ng-container *ngIf="imagesArrayForm.length > 0">
+            <span *ngFor="let image of form.value.images; let i = index"
+              >{{ getFileName(image) }}
+              <ng-container *ngIf="i != imagesArrayForm.length - 1"
+                >,</ng-container
+              >
+            </span>
+          </ng-container>
+          <ng-container *ngIf="imagesArrayForm.length == 0">
+            No image selected
+          </ng-container>
+        </p>
+      </div>
+    </fc-file-input>
+    <fc-file-input (onInput)="addSingleImage($event)">
+      <div
+        class="form-input border border-transparent flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Single Image/file
+        </p>
+        <p class="text-xs">
+          {{
+            form.value.image
+              ? getFileName(form.value.image)
+              : 'No image selected'
+          }}
+        </p>
+      </div>
+    </fc-file-input>
+    <fc-boolean-input
+      formControlName="is_active"
+      title="Active Status"></fc-boolean-input>
+    <label
+      class="form-input border border-transparent flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest"
+      for="fcNumber">
+      <p
+        class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+        Input Calculator
+      </p>
+      <input
+        fcNumber
+        class="m-0 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+        type="number"
+        id="fcNumber"
+        formControlName="fcNumber"
+        placeholder="Placeholder here" />
+    </label>
+    <fc-input-number formControlName="calculatorNumber"></fc-input-number>
+    <div class="flex gap-2 items-start flex-wrap">
+      <button
+        type="button"
+        (click)="openToast('success')"
+        class="btn btn-high"
+        pTooltip="Enter your username"
+        tooltipPosition="bottom">
+        Success
+      </button>
+      <button type="button" (click)="openToast('error')" class="btn btn-high">
+        Failed
+      </button>
+      <button type="button" (click)="openToast()" class="btn btn-high">
+        toast
+      </button>
+    </div>
+    <div class="flex gap-2 items-start flex-wrap">
+      <button
+        type="button"
+        (click)="openConfirmDialog('hello world')"
+        class="btn btn-high">
+        Confirm Dialog
+      </button>
+      <button
+        type="button"
+        (click)="openConfirmDialog('its work')"
+        class="btn btn-high">
+        Confirm Dialog 2
+      </button>
+    </div>
+    <div class="flex gap-1">
+      <div
+        class="w-32 flex-none aspect-square border border-light-lowest dark:border-dark-lowest rounded-md overflow-hidden">
+        <fc-image-preview
+          [src]="
+            'https://gloglo.co.id/assets/images/logo/gloglo-asdfwhite.webp'
+          "
+          [preview]="true"
+          [alt]="'gloglo'">
+          <div class="action-buttons flex gap-1">
+            <button
+              type="button"
+              class="p-1 rounded-md bg-red-600 hover:bg-red-700 dark:hover:bg-red-500 text-2xs text-white">
+              <fa-icon [fixedWidth]="true" [icon]="faTrash"></fa-icon>
+            </button>
+          </div>
+        </fc-image-preview>
+      </div>
+      <div
+        class="flex-1 border border-light-lowest dark:border-dark-lowest rounded-md overflow-hidden">
+        <fc-image-preview
+          [src]="'https://gloglo.co.id/assets/images/logo/gloglo-white.webp'"
+          [preview]="true"
+          [alt]="'gloglo'">
+          <div class="action-buttons flex gap-1">
+            <button
+              type="button"
+              class="p-1 rounded-md bg-red-600 hover:bg-red-700 dark:hover:bg-red-500 text-2xs text-white">
+              <fa-icon [fixedWidth]="true" [icon]="faTrash"></fa-icon>
+            </button>
+            <button
+              type="button"
+              class="p-1 rounded-md bg-red-600 hover:bg-red-700 dark:hover:bg-red-500 text-2xs text-white">
+              <fa-icon [fixedWidth]="true" [icon]="faTrash"></fa-icon>
+            </button>
+          </div>
+        </fc-image-preview>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,324 @@
+<div class="@container">
+  <div class="flex flex-wrap @xl:flex-nowrap items-center gap-3 p-3 @xl:p-5">
+    <div class="flex flex-1 items-center">
+      <button
+        [ngClass]="{
+          'w-0 scale-0 p-0': showSidebar,
+          'mr-2 scale-100 p-2': !showSidebar
+        }"
+        type="button"
+        (click)="toggleSidebar()"
+        class="flex rounded-lg bg-light-high transition-all duration-500 ease-in-out hover:bg-light-lowest dark:bg-dark-high">
+        <fa-icon class="text-xs" [fixedWidth]="true" [icon]="faBars"></fa-icon>
+      </button>
+      <h1 class="flex-1 text-lg font-bold" *ngIf="headerConfig?.title">
+        {{ headerConfig?.title }}
+      </h1>
+    </div>
+    <div
+      class="order-last flex w-full @xl:order-none @xl:w-[300px]"
+      *ngIf="!searchConfig.hide">
+      <label
+        for="searchInput"
+        class="relative w-full flex bg-light-low dark:bg-dark-low rounded-md text-xs items-center p-2 gap-1">
+        <fa-icon
+          class="dark:text-gray-600"
+          [icon]="searchConfig.loading ? faCircleNotch : faSearch"
+          [fixedWidth]="true"
+          [spin]="searchConfig.loading"></fa-icon>
+        <input
+          id="searchInput"
+          type="text"
+          class="flex-1 bg-light-low text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+          placeholder="Cari"
+          [(ngModel)]="searchConfig.searchQuery"
+          fcDebounceKeyup
+          [debounceTime]="900"
+          (onEvent)="onSearch()"
+          [disabled]="searchConfig.disabled"
+          (keyup.enter)="onSearchEnter()" />
+        <button
+          *ngIf="searchConfig.featureName"
+          type="button"
+          class="rounded-md bg-primary-light p-0.5 px-2 text-2xs capitalize text-white dark:bg-primary-dark md:truncate"
+          [pTooltip]="searchConfig.featureName">
+          {{ searchConfig.featureName }}
+        </button>
+      </label>
+    </div>
+    <button
+      type="button"
+      class="fc-animate-translate-up relative flex items-center justify-center gap-1 rounded-xl bg-primary-light px-3 py-2 text-2xs text-white dark:bg-primary-dark"
+      (click)="userDrawer.toggle()">
+      <fa-icon [icon]="faBell"></fa-icon>
+      <span class="text-xs">125</span>
+      <span
+        class="absolute -right-0.5 -top-0.5 h-3 w-3 animate-pulse rounded-full bg-red-500"></span>
+    </button>
+    <div class="flex gap-2">
+      <button
+        (click)="userDrawer.toggle()"
+        type="button"
+        class="fc-animate-translate-up flex overflow-hidden h-8 w-8 items-center justify-center rounded-full bg-primary-light text-2xs text-white dark:bg-primary-dark">
+        <fa-icon *ngIf="false" [icon]="faUser"></fa-icon>
+        <img
+          *ngIf="true"
+          class="h-full w-full object-cover"
+          src="/assets/images/placeholder/dummy-photo.png"
+          alt=""
+          srcset="" />
+      </button>
+      <div class="hidden @4xl:block">
+        <p class="text-xs">{{ user.name }}</p>
+        <p class="text-2xs">{{ user.staff.role_name }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<fc-drawer #userDrawer [header]="false">
+  <div
+    class="h-full w-full bg-light-high/80 dark:bg-dark-high/80 [backdrop-filter:blur(3px)] rounded-l-xl text-xs overflow-y-auto">
+    <div class="header px-4 py-6 pb-3">
+      <div class="flex items-center gap-2">
+        <button
+          class="md:hidden"
+          type="submit"
+          type="button"
+          (click)="userDrawer.hide()">
+          <fa-icon [icon]="faChevronLeft" [fixedWidth]="true"></fa-icon>
+        </button>
+        <img
+          class="w-8 aspect-square rounded-lg"
+          src="/assets/images/placeholder/dummy-photo.png"
+          alt="" />
+        <div>
+          <p class="text-xs">{{ user.name }}</p>
+          <p class="text-2xs text-gray-500">{{ user.staff.role_name }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="theme-select transition duration-1000 ease-in-out">
+      <div class="toggle px-2">
+        <button
+          (click)="showThemes = !showThemes"
+          type="button"
+          class="flex gap-3 py-2 px-2 hover:bg-light-low dark:hover:bg-dark-low rounded-md w-full text-left">
+          <ng-container *ngIf="darkMode.mode != 'system' && darkMode.isDark">
+            <fa-icon [icon]="faMoon" [fixedWidth]="true"></fa-icon>
+            <span class="flex-1"> Dark </span>
+          </ng-container>
+          <ng-container *ngIf="darkMode.mode != 'system' && !darkMode.isDark">
+            <fa-icon [icon]="faSun" [fixedWidth]="true"></fa-icon>
+            <span class="flex-1"> Light</span>
+          </ng-container>
+          <ng-container *ngIf="darkMode.mode == 'system'">
+            <fa-icon [icon]="faCircleHalfStroke" [fixedWidth]="true"></fa-icon>
+            <span class="flex-1"> Default System </span>
+          </ng-container>
+          <div
+            class="transition-all duration-500 ease-in-out"
+            [ngClass]="{
+              'rotate-180': showThemes,
+              'rotate-0': !showThemes
+            }">
+            <fa-icon [fixedWidth]="true" [icon]="faChevronDown"></fa-icon>
+          </div>
+        </button>
+      </div>
+      <div
+        class="themes overflow-hidden transition-all ease-in-out"
+        [ngClass]="{
+          'h-0 duration-500': !showThemes,
+          'h-[68px] duration-300': showThemes
+        }">
+        <div
+          class="options grid grid-cols-3 transition duration-500 ease-in-out"
+          [ngClass]="{ '-translate-y-full ': !showThemes,
+          ' delay-75': showThemes,
+         }">
+          <button
+            type="button"
+            (click)="changeDarkMode('dark')"
+            class="text-center flex justify-center items-center p-1"
+            [ngClass]="{
+              'bg-light-low dark:bg-dark-low hover:opacity-100 opacity-60':
+                darkMode.mode == 'system' || !darkMode.isDark,
+              'bg-primary-light/80 dark:bg-primary-dark/80 text-white':
+                darkMode.mode != 'system' && darkMode.isDark
+            }">
+            <div
+              class="h-full w-full p-2 text-lg"
+              [ngClass]="{
+                'bg-light-high dark:bg-dark-high':
+                  darkMode.mode == 'system' || !darkMode.isDark,
+                'bg-primary-light dark:bg-primary-dark':
+                  darkMode.mode != 'system' && darkMode.isDark
+              }">
+              <fa-icon [fixedWidth]="true" [icon]="faMoon"></fa-icon>
+              <p class="text-xs">Dark</p>
+            </div>
+          </button>
+          <button
+            type="button"
+            (click)="changeDarkMode('system')"
+            class="text-center flex justify-center items-center p-1"
+            [ngClass]="{
+              'bg-light-low dark:bg-dark-low hover:opacity-100 opacity-60':
+                darkMode.mode != 'system',
+              'bg-primary-light/80 dark:bg-primary-dark/80 text-white':
+                darkMode.mode == 'system'
+            }">
+            <div
+              class="h-full shadow-sm w-full p-2 text-lg"
+              [ngClass]="{
+                'bg-light-high dark:bg-dark-high': darkMode.mode != 'system',
+                'bg-primary-dark': darkMode.mode == 'system'
+              }">
+              <fa-icon
+                [fixedWidth]="true"
+                [icon]="faCircleHalfStroke"></fa-icon>
+              <p class="text-xs">Default</p>
+            </div>
+          </button>
+          <button
+            type="button"
+            (click)="changeDarkMode('light')"
+            class="text-center flex justify-center items-center p-1"
+            [ngClass]="{
+              'bg-light-low dark:bg-dark-low hover:opacity-100 opacity-60':
+                darkMode.mode == 'system' || darkMode.isDark,
+              'bg-primary-light/80 dark:bg-primary-dark/80 text-white':
+                darkMode.mode != 'system' && !darkMode.isDark
+            }">
+            <div
+              class="h-full w-full p-2 text-lg"
+              [ngClass]="{
+                'bg-light-high dark:bg-dark-high':
+                  darkMode.mode == 'system' || darkMode.isDark,
+                'bg-primary-light dark:bg-primary-dark':
+                  darkMode.mode != 'system' && !darkMode.isDark
+              }">
+              <fa-icon [fixedWidth]="true" [icon]="faSun"></fa-icon>
+              <p class="text-xs">Light</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menus px-2 mb-3">
+      <div class="md:hidden">
+        <button
+          type="button"
+          class="flex gap-3 py-2 px-2 hover:bg-light-low dark:hover:bg-dark-low rounded-md w-full text-left"
+          (click)="showMenus = !showMenus">
+          <fa-icon [icon]="faBars"></fa-icon>
+          <span class="flex-1"> Menu </span>
+          <div
+            class="transition-all duration-500 ease-in-out"
+            [ngClass]="{
+              'rotate-180': showMenus,
+              'rotate-0': !showMenus
+            }">
+            <fa-icon [fixedWidth]="true" [icon]="faChevronDown"></fa-icon>
+          </div>
+        </button>
+        <div class="ml-6">
+          <div
+            class="themes overflow-hidden transition-all ease-in-out"
+            [ngClass]="{
+              'h-0 duration-500': !showMenus,
+              'h-fit duration-300': showMenus
+            }">
+            <div
+              class="options transition duration-500 ease-in-out"
+              [ngClass]="{ '-translate-y-full ': !showMenus,
+          ' delay-75': showMenus,
+         }">
+              <ng-container *ngFor="let menu of menus">
+                <ng-container *ngIf="!menu.parentRoute">
+                  <button
+                    type="button"
+                    class="flex gap-3 py-2 px-2 hover:bg-light-low dark:hover:bg-dark-low rounded-md w-full text-left"
+                    [routerLink]="[menu.route]"
+                    (click)="userDrawer.hide()">
+                    {{ menu.name }}
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="menu.parentRoute">
+                  <button
+                    type="button"
+                    class="flex gap-3 py-2 px-2 hover:bg-light-low dark:hover:bg-dark-low rounded-md w-full text-left"
+                    [routerLink]="[subMenu.route]"
+                    (click)="userDrawer.hide()"
+                    *ngFor="let subMenu of menu.subMenus">
+                    {{ subMenu.name }}
+                  </button>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <button
+        type="button"
+        class="flex gap-3 py-2 px-2 hover:bg-light-low dark:hover:bg-dark-low rounded-md w-full text-left">
+        <fa-icon [icon]="faLineChart"></fa-icon>
+        Activity Log
+      </button> -->
+      <button
+        type="button"
+        class="flex gap-3 py-2 px-2 hover:bg-light-low dark:hover:bg-dark-low rounded-md w-full text-left"
+        [routerLink]="['/user-profile']"
+        (click)="userDrawer.hide()">
+        <fa-icon [icon]="faCog"></fa-icon>
+        User Settings
+      </button>
+      <button
+        type="button"
+        class="flex gap-3 py-2 px-2 hover:bg-light-low dark:hover:bg-dark-low rounded-md w-full text-left"
+        (click)="logout()">
+        <fa-icon [icon]="faPowerOff"></fa-icon>
+        Logout
+      </button>
+    </div>
+    <div class="w-full h-[1px] bg-light-lowest dark:bg-dark-lowest"></div>
+    <div class="notifications p-5 h-full overflow-y-auto">
+      <div class="notification-header flex mb-3">
+        <div class="title flex-1">
+          <h3 class="text-xs font-bold">Notifications</h3>
+          <p class="text-2xs">
+            {{ notifications.length }} unread notifications
+          </p>
+        </div>
+        <div class="actions">
+          <button
+            type="button"
+            class="flex gap-3 py-1 text-2xs bg-light-low dark:bg-dark-low px-3 hover:bg-light-lowest dark:hover:bg-dark-lowest rounded-md w-full text-left">
+            Clear All
+          </button>
+        </div>
+      </div>
+      <div class="grid gap-3">
+        <div
+          class="notification text-center p-3 rounded-xl bg-gradient-to-b from-light-low to-light-high dark:from-dark-low dark:to-dark-high"
+          *ngFor="let item of notifications">
+          <h4 class="text-xs font-bold mb-1">
+            New Student Registered {{ item }}
+          </h4>
+          <p class="text-2xs mb-1">
+            New student with name faisal has been registered on 21 June 2023.
+          </p>
+          <div class="actions flex justify-center gap-2">
+            <button
+              type="button"
+              class="flex gap-3 py-1 text-2xs text-white bg-primary-light dark:bg-primary-dark px-3 rounded-md">
+              View
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</fc-drawer>

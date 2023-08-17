@@ -1,0 +1,12 @@
+.fc-dropdown.fc-dropdown-center {
+  transform: translateX(-50%);
+  left: 50%;
+}
+
+.fc-dropdown.fc-dropdown-right {
+  right: 0;
+}
+
+.fc-dropdown.fc-dropdown-left {
+  left: 0;
+}

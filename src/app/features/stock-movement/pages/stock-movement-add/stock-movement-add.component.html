@@ -1,0 +1,124 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar [isHasBackButton]="true" [actionButtons]="actionButtons" />
+  <div class="body h-full w-full overflow-y-auto text-xs @container">
+    <form
+      class="mx-auto mt-2 lg:flex w-full gap-3"
+      [formGroup]="stockMovementForm">
+      <div class="space-y-3 w-full">
+        <!-- Select Warehouse From -->
+        <div
+          class="form-input items-center flex cursor-pointer dark:hover:bg-dark-lowest rounded-lg bg-light-lowest p-2 dark:bg-dark-low">
+          <div class="flex flex-col flex-1">
+            <p
+              class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+              Warehouse From
+            </p>
+            <p *ngIf="stockMovementForm.value.from_warehouse" class="text-xs">
+              {{ stockMovementForm.value.from_warehouse.name }}
+            </p>
+            <p
+              *ngIf="!stockMovementForm.value.from_warehouse"
+              class="text-xs dark:text-gray-400">
+              Select Warehouse From
+            </p>
+          </div>
+          <div class="flex gap-2 items-center">
+            <button
+              *ngIf="stockMovementForm.value.from_warehouse"
+              type="button"
+              (click)="removeWarehouseFrom()">
+              <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+            </button>
+            <button type="button" (click)="onSelectWarehouseFrom()">
+              <fa-icon [fixedWidth]="true" [icon]="faChevronDown"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div class="py-[2vh] text-center" *ngIf="loadingWarehouse">
+          <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+          <p>Loading . . .</p>
+        </div>
+        <div
+          *ngIf="stockMovementForm.value.from_warehouse && !loadingWarehouse"
+          class="grid lg:grid-cols-2 gap-2">
+          <!-- Select Product Inventories -->
+          <div
+            class="form-input items-center flex cursor-pointer dark:hover:bg-dark-lowest rounded-lg bg-light-lowest p-2 dark:bg-dark-low">
+            <div class="flex flex-col flex-1">
+              <p
+                class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+                Product Inventory
+              </p>
+              <p *ngIf="stockMovementForm.value.product" class="text-xs">
+                {{ stockMovementForm.value.product.name }}
+              </p>
+              <p
+                *ngIf="!stockMovementForm.value.product"
+                class="text-xs dark:text-gray-400">
+                Select Product Inventory
+              </p>
+            </div>
+            <div class="flex gap-2 items-center">
+              <button
+                *ngIf="stockMovementForm.value.product"
+                type="button"
+                (click)="removeProductInventory()">
+                <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+              </button>
+              <button type="button" (click)="onSelectProductInventory()">
+                <fa-icon [fixedWidth]="true" [icon]="faChevronDown"></fa-icon>
+              </button>
+            </div>
+          </div>
+          <fc-input-number
+            *ngIf="stockMovementForm.value.product"
+            [title]="'Quantity' + ' (Max ' + allowedQuantity + ' Pcs)'"
+            formControlName="quantity"
+            placeholder="Enter Quantity">
+          </fc-input-number>
+        </div>
+      </div>
+      <div class="space-y-3 w-full">
+        <!-- Select Warehouse To -->
+        <div
+          class="form-input items-center flex cursor-pointer dark:hover:bg-dark-lowest rounded-lg bg-light-lowest p-2 dark:bg-dark-low">
+          <div class="flex flex-col flex-1">
+            <p
+              class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+              Warehouse To
+            </p>
+            <p *ngIf="stockMovementForm.value.to_warehouse" class="text-xs">
+              {{ stockMovementForm.value.to_warehouse.name }}
+            </p>
+            <p
+              *ngIf="!stockMovementForm.value.to_warehouse"
+              class="text-xs dark:text-gray-400">
+              Select Warehouse To
+            </p>
+          </div>
+          <div class="flex gap-2 items-center">
+            <button
+              *ngIf="stockMovementForm.value.to_warehouse"
+              type="button"
+              (click)="removeWarehouseTo()">
+              <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+            </button>
+            <button type="button" (click)="onSelectWarehouseTo()">
+              <fa-icon [fixedWidth]="true" [icon]="faChevronDown"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div class="grid gap-2 lg:grid-cols-2">
+          <fc-datepicker
+            title="Date"
+            formControlName="date"
+            [placeholder]="'Date'" />
+          <fc-input-text
+            [title]="'Note'"
+            [placeholder]="'Enter Note'"
+            formControlName="note" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

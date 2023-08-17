@@ -1,0 +1,41 @@
+<div
+  class="fc-toast fixed bottom-0 right-0 lg:bottom-6 lg:right-6 space-y-2 w-[380px]">
+  <div
+    *ngIf="toasts.length > 1"
+    class="dark:text-gray-400 text-2xs p-1 rounded-md bg-dark-lowest/5 hover:bg-dark-lowest/20 [backdrop-filter:blur(3px)] flex justify-between mb-1">
+    <button type="button" (click)="toggleMessage()">
+      {{ isShowAllitem ? 'Minimize' : 'Show All' }}
+    </button>
+    <button type="button" (click)="clearAll()">Clear all</button>
+  </div>
+  <ng-container *ngFor="let toast of toasts; let i = index">
+    <ng-container *ngIf="i == 0">
+      <fc-toast-item
+        [toast]="toast"
+        [index]="i"
+        (onClose)="hideToast($event)"></fc-toast-item>
+    </ng-container>
+    <div class="relative">
+      <ng-container *ngIf="i == 1">
+        <div class="relative z-10">
+          <fc-toast-item
+            [toast]="toast"
+            [index]="i"
+            (onClose)="hideToast($event)"></fc-toast-item>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="i > 1">
+        <div
+          [ngClass]="{
+            'absolute scale-95 translate-y-1 bottom-0 w-full [&_.toast]:opacity-0':
+              !isShowAllitem
+          }">
+          <fc-toast-item
+            [toast]="toast"
+            [index]="i"
+            (onClose)="hideToast($event)"></fc-toast-item>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</div>

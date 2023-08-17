@@ -1,0 +1,40 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar
+    [isHasBackButton]="true"
+    [actionButtons]="actionButtons"
+    [filterButtons]="filterButtons"></app-fc-action-bar>
+  <div class="body h-full w-full overflow-y-auto text-xs @container">
+    <form
+      class="mx-auto mt-2 grid w-full gap-3 @xl:grid-cols-2"
+      [formGroup]="currencyForm">
+      <label
+        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
+        for="code">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Code
+        </p>
+        <input
+          class="m-0 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+          type="text"
+          formControlName="code"
+          id="code"
+          placeholder="Enter Your Currency Code" />
+      </label>
+      <label
+        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
+        for="name">
+        <p
+          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+          Name
+        </p>
+        <input
+          class="m-0 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
+          type="text"
+          formControlName="name"
+          id="name"
+          placeholder="Enter Your Name" />
+      </label>
+    </form>
+  </div>
+</div>

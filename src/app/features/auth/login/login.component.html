@@ -1,0 +1,109 @@
+<div class="flex min-h-screen w-full flex-row">
+  <div
+    class="relative hidden w-1/2 items-start justify-between bg-light-high p-8 dark:bg-dark-high lg:flex lg:flex-col">
+    <div
+      class="flex w-full flex-row items-center justify-start whitespace-nowrap text-base font-bold uppercase tracking-wider text-blue-900"></div>
+    <div class="flex flex-col">
+      <img
+        *ngIf="darkMode.isDark"
+        class="mb-5 w-80"
+        src="assets/images/logo/logo-image-white.webp"
+        alt="Folxcode" />
+      <img
+        *ngIf="!darkMode.isDark"
+        class="mb-5 w-80"
+        src="assets/images/logo/logo-image.webp"
+        alt="Folxcode" />
+      <p class="mb-2 text-4xl font-medium">
+        Welcome to
+        <span class="font-bold text-primary-light">Liszthoven</span><br />
+        Administration Websystem!
+      </p>
+      <p class="">
+        Thank you for using our service, if there are some problem or error
+        occured. <br />
+        Please contact us immediately with screenshot.
+      </p>
+    </div>
+    <div
+      class="z-10 flex w-full flex-row items-center justify-between text-xs"></div>
+  </div>
+  <div
+    class="relative flex w-full flex-col items-start justify-between lg:w-1/2 lg:justify-center">
+    <div
+      class="absolute h-full w-full bg-[url('/assets/images/bg/login-bg.webp')] bg-cover bg-left bg-no-repeat brightness-50"></div>
+    <div
+      class="z-10 mt-10 flex w-full flex-row items-center justify-center whitespace-nowrap text-base font-bold uppercase tracking-wider text-white lg:hidden">
+      <a class="flex flex-row items-center justify-start space-x-2" href="/">
+        <span>
+          <img
+            *ngIf="darkMode.isDark"
+            class="h-20"
+            src="assets/images/logo/logo-image-white.webp"
+            alt="Folxcode" />
+          <img
+            *ngIf="!darkMode.isDark"
+            class="h-20"
+            src="assets/images/logo/logo-image.webp"
+            alt="Folxcode" />
+        </span>
+      </a>
+    </div>
+    <div
+      class="z-10 mx-auto mb-20 w-[96vw] rounded-xl bg-light-high p-10 dark:bg-dark-high md:max-w-md">
+      <h2 class="text-3xl font-bold">Login</h2>
+      <p class="mb-9 text-sm text-slate-600 dark:text-slate-400">
+        Liszthoven Admin
+      </p>
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="submit()"
+        class="form flex flex-wrap space-y-7">
+        <span class="w-full">
+          <label class="mb-2" for="username">Username</label>
+          <input
+            type="text"
+            class="w-full bg-light-low dark:bg-dark-low"
+            pInputText
+            formControlName="username"
+            id="username"
+            required />
+        </span>
+        <span class="w-full">
+          <label class="mb-2" for="password">Password</label>
+          <input
+            type="password"
+            class="w-full bg-light-low dark:bg-dark-low"
+            pInputText
+            formControlName="password"
+            id="password"
+            required />
+        </span>
+        <p-button
+          type="submit"
+          label="Login"
+          styleClass="w-full p-button-sm bg-primary-light hover:bg-primary-dark"
+          [loading]="loading"
+          (onClick)="submit()"></p-button>
+      </form>
+    </div>
+    <div class="z-10"></div>
+  </div>
+</div>
+<div class="bottom-10 left-10 z-10 text-xs lg:fixed">
+  <a
+    class="flex items-center space-x-2 rounded-md bg-light-low p-2 dark:rounded-none dark:bg-dark-high"
+    href="/">
+    <span
+      ><img
+        class="rounded-md"
+        src="assets/images/logo/fc-white-blue.png"
+        width="30px"
+        alt="folxcode"
+    /></span>
+    <p class="">
+      made <br />by
+      <span class="font-bold text-primary">Folxcode</span>
+    </p>
+  </a>
+</div>

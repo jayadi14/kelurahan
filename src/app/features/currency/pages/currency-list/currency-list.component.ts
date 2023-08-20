@@ -98,7 +98,7 @@ export class CurrencyListComponent
     private fcFilterDialogService: FcFilterDialogService
   ) {
     this.layoutService.setHeaderConfig({
-      title: 'Currency',
+      title: 'Pengguna',
       icon: '',
       showHeader: true,
     });
@@ -110,7 +110,7 @@ export class CurrencyListComponent
         this.searchQuery = params.searchQuery ? params.searchQuery : '';
         this.layoutService.setSearchConfig({
           searchQuery: this.searchQuery,
-          featureName: 'currency',
+          featureName: 'Pengguna',
           baseHref: '/currency/list',
         });
         if (params.order_by && params.direction) {

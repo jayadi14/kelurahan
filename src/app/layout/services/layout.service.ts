@@ -61,7 +61,7 @@ export class LayoutService {
     return [
       {
         route: '/currency',
-        name: 'Currency',
+        name: 'Pengguna',
       },
     ];
   }

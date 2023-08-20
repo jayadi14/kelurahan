@@ -44,7 +44,7 @@ export class CurrencyAddComponent {
     private location: Location
   ) {
     this.layoutService.setHeaderConfig({
-      title: 'Add Currency',
+      title: 'Tambah Pengguna',
       icon: '',
       showHeader: true,
     });

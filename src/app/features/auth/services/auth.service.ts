@@ -36,9 +36,9 @@ export class AuthService {
   }
 
   login(loginData: any) {
-    return this.http.post(ROOT_API_URL + '/admin/auth/login', loginData).pipe(
+    return this.http.post(ROOT_API_URL + '/auth/login', loginData).pipe(
       map((res: any) => {
-        if (res.statusCode == 200) {
+        if (res.code == 200) {
           // set cookie
           localStorage.setItem(
             'access_token',

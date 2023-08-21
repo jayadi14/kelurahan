@@ -9,17 +9,16 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/currency/list',
+        redirectTo: '/',
         pathMatch: 'full',
       },
       {
-        path: 'currency',
+        path: 'users',
         loadChildren: () =>
-          import('../features/currency/currency.module').then(
-            (m) => m.CurrencyModule
+          import('../features/users/users.module').then(
+            (m) => m.UsersModule
           ),
       },
-
       {
         path: 'template-ui',
         loadChildren: () =>

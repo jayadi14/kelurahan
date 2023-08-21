@@ -60,7 +60,7 @@ export class LayoutService {
   getRoutes() {
     return [
       {
-        route: '/currency',
+        route: '/users',
         name: 'Pengguna',
       },
     ];

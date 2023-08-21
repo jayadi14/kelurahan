@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   appName: 'Liszthoven Admin',
   // appVersion: require('../../package.json').version + '-dev',
-  API_URL: 'https://api.liszthoven.id/api/v1',
+  API_URL: 'http://127.0.0.1:8000/api/v1',
   locale_string: 'IDR',
   default_currency_code: 'id',
 };

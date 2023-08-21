@@ -1,19 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
+import { AuthService } from '@features/auth/services/auth.service';
 import { DataListParameter } from '@shared/interfaces/data-list-parameter.interface';
+import { map } from 'rxjs';
 
 const ROOT_API = environment.API_URL;
 
 @Injectable({
   providedIn: 'root',
 })
-export class ExchangeRateService {
-  constructor(private http: HttpClient) {}
+export class UsersService {
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getExchangeRates(
-    dataListParameter: DataListParameter = {} as DataListParameter
-  ) {
+  getUsers(dataListParameter: DataListParameter = {} as DataListParameter) {
     let param = '';
     if (dataListParameter.rows && dataListParameter.page) {
       param = param.concat(
@@ -34,19 +34,10 @@ export class ExchangeRateService {
         param = param.concat('&q=' + dataListParameter.searchQuery);
       }
     }
-    return this.http.get(`${ROOT_API}/admin/exchange-rates${param}`);
+    return this.http.get(`${ROOT_API}/users/lists${param}`);
   }
 
-  getExchangeRate(id: string) {
-    return this.http.get(`${ROOT_API}/admin/exchange-rates/${id}`);
-  }
-  addExchangeRate(currency: any) {
-    return this.http.post(`${ROOT_API}/admin/exchange-rates`, currency);
-  }
-  updateExchangeRate(id: string, currency: any) {
-    return this.http.put(`${ROOT_API}/admin/exchange-rates/${id}`, currency);
-  }
-  deleteExchangeRate(id: string) {
-    return this.http.delete(`${ROOT_API}/admin/exchange-rates/${id}`);
+  approveUserRegister(userId:number, approval:number){
+    return this.http.put(`${ROOT_API}/users/approval/${userId}?status=${approval}`, {});
   }
 }

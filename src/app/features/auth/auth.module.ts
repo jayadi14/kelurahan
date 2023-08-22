@@ -11,9 +11,11 @@ import { FcDatepickerModule } from '@shared/components/fc-datepicker/fc-datepick
 import { FcInputTextModule } from '@shared/components/fc-input-text/fc-input-text.module';
 import { FcInputNumberModule } from '@shared/components/fc-input-number/fc-input-number.module';
 import { FcSelectOptionModule } from '@shared/components/fc-select-option/fc-select-option.module';
+import { RegisterSelectRtDialogComponent } from './register/components/register-select-rt-dialog/register-select-rt-dialog.component';
+import { FcPaginationModule } from '@shared/components/fc-pagination/fc-pagination.module';
 
 @NgModule({
-  declarations: [AuthComponent, LoginComponent, RegisterComponent],
+  declarations: [AuthComponent, LoginComponent, RegisterComponent, RegisterSelectRtDialogComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
@@ -23,6 +25,7 @@ import { FcSelectOptionModule } from '@shared/components/fc-select-option/fc-sel
     FcInputTextModule,
     FcInputNumberModule,
     FcSelectOptionModule,
+    FcPaginationModule
   ],
   exports: [CommonModule, FormsModule, ReactiveFormsModule],
 })

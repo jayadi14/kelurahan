@@ -4,16 +4,6 @@
     <div
       class="flex w-full flex-row items-center justify-start whitespace-nowrap text-base font-bold uppercase tracking-wider text-blue-900"></div>
     <div class="flex flex-col">
-      <!-- <img
-        *ngIf="darkMode.isDark"
-        class="mb-5 w-80"
-        src="assets/images/logo/logo-image-white.webp"
-        alt="Folxcode" />
-      <img
-        *ngIf="!darkMode.isDark"
-        class="mb-5 w-80"
-        src="assets/images/logo/logo-image.webp"
-        alt="Folxcode" /> -->
       <p class="mb-2 text-4xl font-medium">
         Selamat datang di
         <span class="font-bold text-primary-light">SIK</span>
@@ -32,32 +22,14 @@
     <div
       class="absolute h-full w-full bg-[url('/assets/images/bg/login-bg.webp')] bg-cover bg-left bg-no-repeat brightness-50"></div>
     <div
-      class="z-10 mt-10 flex w-full flex-row items-center justify-center whitespace-nowrap text-base font-bold uppercase tracking-wider text-white lg:hidden">
-      <!-- <a class="flex flex-row items-center justify-start space-x-2" href="/">
-        <span>
-          <img
-            *ngIf="darkMode.isDark"
-            class="h-20"
-            src="assets/images/logo/logo-image-white.webp"
-            alt="Folxcode" />
-          <img
-            *ngIf="!darkMode.isDark"
-            class="h-20"
-            src="assets/images/logo/logo-image.webp"
-            alt="Folxcode" />
-        </span>
-      </a> -->
-    </div>
+      class="z-10 mt-10 flex w-full flex-row items-center justify-center whitespace-nowrap text-base font-bold uppercase tracking-wider text-white lg:hidden"></div>
     <div
       class="z-10 mx-auto w-[96vw] rounded-xl bg-light-high p-8 dark:bg-dark-high md:max-w-md">
       <h2 class="text-3xl font-bold">Registrasi</h2>
       <p class="mb-9 text-sm text-slate-600 dark:text-slate-400">
         Sistem Informasi Kelurahan
       </p>
-      <form
-        [formGroup]="registerForm"
-        (ngSubmit)="submit()"
-        class="form space-y-4">
+      <form [formGroup]="registerForm" class="form space-y-4">
         <div class="space-y-2">
           <div
             class="h-[250px] overflow-y-auto grid grid-cols-1 xl:grid-cols-2 items-center gap-2">
@@ -70,15 +42,17 @@
               </fc-input-text>
             </div>
             <div class="w-full">
-              <fc-input-number
-                title="Nomor Handphone"
-                formControlName="phone_number"
-                placeholder="Masukkan Nomor Handphone Anda"></fc-input-number>
+              <fc-input-text
+                [type]="'text'"
+                [title]="'Nomor Handphone'"
+                [placeholder]="'Masukkan Nomor Handphone Anda'"
+                formControlName="phone_no">
+              </fc-input-text>
             </div>
             <div class="w-full">
               <fc-input-text
                 [type]="'password'"
-                [title]="'Password'"
+                [title]="'Password (Harus Lebih dari 8 Karakter)'"
                 [placeholder]="'Masukkan Password Anda'"
                 formControlName="password">
               </fc-input-text>
@@ -127,7 +101,7 @@
               <fc-select-option
                 [options]="religion"
                 formControlName="religion"
-                [optionValue]="'id'"
+                [optionValue]="'name'"
                 [optionLable]="'name'"
                 title="Agama"
                 [placeholder]="'Pilih Agama'"
@@ -136,31 +110,55 @@
               </fc-select-option>
             </div>
             <div class="w-full">
-              <fc-input-number
-                title="NIK"
-                formControlName="nik"
-                placeholder="Masukkan Nik Anda"></fc-input-number>
+              <fc-input-text
+                [type]="'text'"
+                [title]="'NIK'"
+                [placeholder]="'Masukkan NIK Anda'"
+                formControlName="nik">
+              </fc-input-text>
+            </div>
+            <div class="w-full">
+              <!-- Select RW -->
+              <div
+                class="form-input items-center flex cursor-pointer dark:hover:bg-dark-lowest rounded-lg bg-light-lowest p-2 dark:bg-dark-low">
+                <div class="flex flex-col flex-1">
+                  <p
+                    class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+                    RW
+                  </p>
+                  <p *ngIf="registerForm.value.rw" class="text-xs">
+                    {{ registerForm.value.rw.section_no }}
+                  </p>
+                  <p
+                    *ngIf="!registerForm.value.rw"
+                    class="text-xs dark:text-gray-400">
+                    Pilih RW
+                  </p>
+                </div>
+                <div class="flex gap-2 items-center">
+                  <button
+                    *ngIf="registerForm.value.rw"
+                    type="button"
+                    (click)="removeRW()">
+                    <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+                  </button>
+                  <button type="button" (click)="onSelectRW()">
+                    <fa-icon
+                      [fixedWidth]="true"
+                      [icon]="faChevronDown"></fa-icon>
+                  </button>
+                </div>
+              </div>
             </div>
             <div class="w-full">
               <fc-select-option
+                [disabled]="!registerForm.value.rw"
                 [options]="rt"
                 formControlName="rt"
-                [optionValue]="'id'"
-                [optionLable]="'name'"
+                [optionValue]="'section_no'"
+                [optionLable]="'section_no'"
                 title="RT"
                 [placeholder]="'Pilih RT'"
-                [desktopView]="'overlay'"
-                [mobileView]="'dialog'">
-              </fc-select-option>
-            </div>
-            <div class="w-full">
-              <fc-select-option
-                [options]="rw"
-                formControlName="rw"
-                [optionValue]="'id'"
-                [optionLable]="'name'"
-                title="RW"
-                [placeholder]="'Pilih RW'"
                 [desktopView]="'overlay'"
                 [mobileView]="'dialog'">
               </fc-select-option>

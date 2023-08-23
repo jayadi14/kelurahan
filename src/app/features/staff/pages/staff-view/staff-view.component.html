@@ -1,1 +1,86 @@
-<p>staff-view works!</p>
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar
+    [isHasBackButton]="true"
+    [actionButtons]="actionButtons"
+    [filterButtons]="filterButtons" />
+  <form
+    [formGroup]="staffForm"
+    class="body relative h-full w-full overflow-y-auto pt-5 text-xs">
+    <div *ngIf="!loading" class="grid w-full gap-3">
+      <fc-input-text
+        [title]="'Nama'"
+        [placeholder]="'Nama'"
+        [disabled]="true"
+        formControlName="name">
+      </fc-input-text>
+      <fc-input-text
+        [title]="'Email'"
+        [placeholder]="'Email'"
+        [disabled]="true"
+        formControlName="email">
+      </fc-input-text>
+      <fc-select-option
+        [options]="role"
+        formControlName="role"
+        [optionValue]="'id'"
+        [optionLable]="'name'"
+        title="Role"
+        [placeholder]="'Pilih Role'"
+        [desktopView]="'overlay'"
+        [disabled]="true"
+        [mobileView]="'dialog'">
+      </fc-select-option>
+
+      <div
+        *ngIf="staff.role == 2"
+        class="flex justify-between border items-center gap-2 border-transparent rounded-md cursor-pointer bg-light-lowest p-2 dark:bg-dark-low hover:border-primary-light hover:dark:border-primary-light">
+        <div>
+          <p
+            class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+            Asal RW
+          </p>
+          <p>RW {{ staff.staff.parent.section_no }}</p>
+        </div>
+        <a
+          [routerLink]="['/staff/view', staff.staff.parent.user_id]"
+          target="_blank"
+          pTooltip="View Product"
+          class="btn btn-high">
+          <fa-icon [fixedWidth]="true" [icon]="faEye"></fa-icon>
+        </a>
+      </div>
+
+      <ng-container *ngIf="staff.role == 3">
+        <div class="w-full mt-3 @container text-xs">
+          <p>Daftar RT</p>
+          <div
+            *ngIf="staff.staff.children.length"
+            class="mt-2 gap-2 grid @lg:grid-cols-2 w-full">
+            <ng-container *ngFor="let rt of staff.staff.children">
+              <div
+                class="flex justify-between border items-center gap-2 border-transparent rounded-md cursor-pointer bg-light-lowest p-2 dark:bg-dark-low hover:border-primary-light hover:dark:border-primary-light">
+                <p>RT {{ rt.section_no }}</p>
+                <a
+                  [routerLink]="['/staff/view', rt.user_id]"
+                  target="_blank"
+                  pTooltip="View Product"
+                  class="btn btn-high">
+                  <fa-icon [fixedWidth]="true" [icon]="faEye"></fa-icon>
+                </a>
+              </div>
+            </ng-container>
+          </div>
+          <div
+            *ngIf="!staff.staff.children.length"
+            class="mt-2 text-center w-full">
+            <p class="text-2xs">Tidak ada Data</p>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="py-[20vh] text-center" *ngIf="loading">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+      <p>Loading . . .</p>
+    </div>
+  </form>
+</div>

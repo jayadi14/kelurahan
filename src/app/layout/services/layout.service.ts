@@ -63,6 +63,10 @@ export class LayoutService {
         route: '/civilians',
         name: 'Warga',
       },
+      {
+        route: '/staff',
+        name: 'Staff RW/RT',
+      },
     ];
   }
 }

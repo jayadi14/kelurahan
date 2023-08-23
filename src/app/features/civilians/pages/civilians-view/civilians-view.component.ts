@@ -1,13 +1,15 @@
 import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CiviliansService } from '@features/civilians/services/civilians.service';
 import {
+  faCheck,
   faEye,
   faPlus,
   faRefresh,
   faSave,
   faTruckMoving,
+  faX,
 } from '@fortawesome/free-solid-svg-icons';
 import { FcConfirmService } from '@shared/components/fc-confirm/fc-confirm.service';
 import { FcToastService } from '@shared/components/fc-toast/fc-toast.service';
@@ -35,10 +37,19 @@ export class CiviliansViewComponent
 
   actionButtons: any[] = [
     {
-      label: 'Save',
-      icon: faSave,
+      label: 'Setuju',
+      icon: faCheck,
+      hidden: true,
       action: () => {
-        // this.submit();
+        this.approveUser(this.userId, 1);
+      },
+    },
+    {
+      label: 'Tolak',
+      icon: faX,
+      hidden: true,
+      action: () => {
+        this.approveUser(this.userId, 2);
       },
     },
   ];
@@ -49,7 +60,7 @@ export class CiviliansViewComponent
       label: '',
       icon: faRefresh,
       action: () => {
-        // this.refresh();
+        this.refresh();
       },
     },
   ];
@@ -74,7 +85,7 @@ export class CiviliansViewComponent
     private route: ActivatedRoute,
     private fcConfirmService: FcConfirmService,
     private fcToastService: FcToastService,
-    private dialogService: DialogService,
+    private router: Router,
     private location: Location
   ) {
     this.userId = Number(this.route.snapshot.paramMap.get('id'));
@@ -115,6 +126,13 @@ export class CiviliansViewComponent
       .subscribe((res: any) => {
         this.loading = false;
         this.user = res.data;
+        if (this.user.civilian.status > 0) {
+          this.actionButtons[0].hidden = true;
+          this.actionButtons[1].hidden = true;
+        } else {
+          this.actionButtons[0].hidden = false;
+          this.actionButtons[1].hidden = false;
+        }
         this.civilianForm.patchValue({
           name: this.user.name,
           email: this.user.email,
@@ -128,6 +146,42 @@ export class CiviliansViewComponent
           religion: this.user.civilian.religion,
         });
       });
+  }
+
+  approveUser(userId: number, approve: number) {
+    let message = '';
+    if (approve == 1) {
+      message = 'menyetujui';
+    } else {
+      message = 'menolak';
+    }
+    this.fcConfirmService.open({
+      header: 'Confirmation',
+      message: `Apakah kamu yakin ingin ${message} registrasi user ini?`,
+      accept: () => {
+        this.civiliansService
+          .approveCivilianRegister(userId, approve)
+          .subscribe({
+            next: (res: any) => {
+              this.fcToastService.add({
+                severity: 'success',
+                header: 'Approve Pengguna',
+                message: res.message,
+              });
+              this.actionButtons[0].hidden = true;
+              this.actionButtons[1].hidden = true;
+              this.router.navigate(['/civilians/list']);
+            },
+            error: (err) => {
+              this.fcToastService.add({
+                severity: 'error',
+                header: 'Approval Pengguna',
+                message: err.message,
+              });
+            },
+          });
+      },
+    });
   }
 
   back() {

@@ -1,0 +1,70 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar [isHasBackButton]="true" [actionButtons]="actionButtons" />
+  <form
+    [formGroup]="staffForm"
+    class="body relative h-full w-full overflow-y-auto pt-5 text-xs">
+    <div class="grid w-full gap-3">
+      <fc-input-text
+        [title]="'Nama'"
+        [placeholder]="'Nama'"
+        formControlName="name" />
+      <fc-input-text
+        [type]="'email'"
+        [title]="'Email'"
+        [placeholder]="'Email'"
+        formControlName="email" />
+      <fc-input-text
+        [type]="'password'"
+        [title]="'Password'"
+        [placeholder]="'Password'"
+        formControlName="password" />
+      <fc-input-text
+        [type]="'password'"
+        [title]="'Konfirmasi Password'"
+        [placeholder]="'Konfirmasi Password'"
+        formControlName="confirm_password" />
+      <fc-select-option
+        [options]="role"
+        formControlName="role"
+        [optionValue]="'id'"
+        [optionLable]="'name'"
+        title="Role"
+        [placeholder]="'Pilih Role'"
+        [desktopView]="'overlay'"
+        [mobileView]="'dialog'">
+      </fc-select-option>
+      <!-- Select RW -->
+      <div
+        *ngIf="staffForm.value.role == 2"
+        class="form-input items-center flex cursor-pointer dark:hover:bg-dark-lowest rounded-lg bg-light-lowest p-2 dark:bg-dark-low">
+        <div class="flex flex-col flex-1">
+          <p
+            class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+            RW
+          </p>
+          <p *ngIf="staffForm.value.parent" class="text-xs">
+            {{ staffForm.value.parent.section_no }}
+          </p>
+          <p *ngIf="!staffForm.value.parent" class="text-xs dark:text-gray-400">
+            Pilih RW
+          </p>
+        </div>
+        <div class="flex gap-2 items-center">
+          <button
+            *ngIf="staffForm.value.parent"
+            type="button"
+            (click)="removeRW()">
+            <fa-icon [icon]="faTimes" [fixedWidth]="true"></fa-icon>
+          </button>
+          <button type="button" (click)="onSelectRW()">
+            <fa-icon [fixedWidth]="true" [icon]="faChevronDown"></fa-icon>
+          </button>
+        </div>
+      </div>
+      <fc-input-number
+        title="Nomor"
+        formControlName="section_no"
+        placeholder="Masukkan Nomor"></fc-input-number>
+    </div>
+  </form>
+</div>

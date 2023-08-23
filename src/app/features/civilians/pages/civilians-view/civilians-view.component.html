@@ -1,1 +1,81 @@
-<p>civilians-view works!</p>
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar
+    [isHasBackButton]="true"
+    [actionButtons]="actionButtons"
+    [filterButtons]="filterButtons" />
+  <form
+    [formGroup]="civilianForm"
+    class="body relative h-full w-full overflow-y-auto pt-5 text-xs">
+    <div *ngIf="!loading" class="grid w-full gap-3">
+      <fc-input-text
+        [title]="'Nama'"
+        [placeholder]="'Nama'"
+        [disabled]="true"
+        formControlName="name">
+      </fc-input-text>
+      <fc-input-text
+        [title]="'Email'"
+        [placeholder]="'Email'"
+        [disabled]="true"
+        formControlName="email">
+      </fc-input-text>
+      <fc-input-text
+        [title]="'Tempat Lahir'"
+        [placeholder]="'Tempat Lahir'"
+        [disabled]="true"
+        formControlName="birth_place">
+      </fc-input-text>
+      <fc-datepicker
+        [placeholder]="'Tanggal Lahir'"
+        title="Tanggal Lahir"
+        [disabled]="true"
+        formControlName="birth_date">
+      </fc-datepicker>
+      <fc-select-option
+        [options]="gender"
+        formControlName="gender"
+        [optionValue]="'id'"
+        [optionLable]="'name'"
+        title="Jenis Kelamin"
+        [placeholder]="'Pilih Jenis Kelamin'"
+        [desktopView]="'overlay'"
+        [disabled]="true"
+        [mobileView]="'dialog'">
+      </fc-select-option>
+      <fc-input-text
+        [title]="'NIK'"
+        [placeholder]="'NIK'"
+        [disabled]="true"
+        formControlName="nik">
+      </fc-input-text>
+      <fc-input-text
+        [title]="'RT'"
+        [placeholder]="'RT'"
+        [disabled]="true"
+        formControlName="rt">
+      </fc-input-text>
+      <fc-input-text
+        [title]="'RW'"
+        [placeholder]="'RW'"
+        [disabled]="true"
+        formControlName="rw">
+      </fc-input-text>
+      <fc-input-text
+        [title]="'Nomor Handphone'"
+        [placeholder]="'Nomor Handphone'"
+        [disabled]="true"
+        formControlName="phone_no">
+      </fc-input-text>
+      <fc-input-text
+        [title]="'Agama'"
+        [placeholder]="'Agama'"
+        [disabled]="true"
+        formControlName="religion">
+      </fc-input-text>
+    </div>
+    <div class="py-[20vh] text-center" *ngIf="loading">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+      <p>Loading . . .</p>
+    </div>
+  </form>
+</div>

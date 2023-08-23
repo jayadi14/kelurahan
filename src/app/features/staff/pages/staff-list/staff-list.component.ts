@@ -1,5 +1,7 @@
 import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserStaff } from '@features/staff/interfaces/staff';
+import { StaffService } from '@features/staff/services/staff.service';
 import {
   faCheck,
   faChevronDown,
@@ -14,24 +16,20 @@ import {
   faTrash,
   faX,
 } from '@fortawesome/free-solid-svg-icons';
-import { FcFilterConfig } from '@shared/components/fc-filter-dialog/interfaces/fc-filter-config';
-import { LayoutService } from 'src/app/layout/services/layout.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FcFilterDialogService } from '@shared/components/fc-filter-dialog/services/fc-filter-dialog.service';
-import { DataListParameter } from '@shared/interfaces/data-list-parameter.interface';
 import { FcConfirmService } from '@shared/components/fc-confirm/fc-confirm.service';
+import { FcFilterConfig } from '@shared/components/fc-filter-dialog/interfaces/fc-filter-config';
+import { FcFilterDialogService } from '@shared/components/fc-filter-dialog/services/fc-filter-dialog.service';
 import { FcToastService } from '@shared/components/fc-toast/fc-toast.service';
-import { CiviliansService } from '@features/civilians/services/civilians.service';
-import { User } from '@features/civilians/interfaces/civilian';
+import { DataListParameter } from '@shared/interfaces/data-list-parameter.interface';
+import { Subject, takeUntil } from 'rxjs';
+import { LayoutService } from 'src/app/layout/services/layout.service';
 
 @Component({
-  selector: 'app-civilians-list',
-  templateUrl: './civilians-list.component.html',
-  styleUrls: ['./civilians-list.component.css'],
+  selector: 'app-staff-list',
+  templateUrl: './staff-list.component.html',
+  styleUrls: ['./staff-list.component.css'],
 })
-export class CiviliansListComponent
-  implements OnInit, AfterContentInit, OnDestroy
-{
+export class StaffListComponent implements OnInit, AfterContentInit, OnDestroy {
   private destroy$: any = new Subject();
   // Icons
   faPlus = faPlus;
@@ -53,16 +51,15 @@ export class CiviliansListComponent
   page = 1;
   rows = 10;
   searchQuery: string = '';
+
   actionButtons: any[] = [
     {
-      label: 'Refresh',
-      icon: faRefresh,
-      action: () => {
-        this.loadData();
-      },
+      label: 'Add',
+      icon: faPlus,
+      route: ['/staff/add'],
+      action: () => {},
     },
   ];
-
   filterButtons: any[] = [];
 
   fcFilterConfig: FcFilterConfig = {
@@ -73,12 +70,11 @@ export class CiviliansListComponent
       direction: 'desc',
     },
   };
-
-  users: User[] = [];
+  staffs: UserStaff[] = [];
 
   constructor(
     private layoutService: LayoutService,
-    private civiliansService: CiviliansService,
+    private staffService: StaffService,
     private router: Router,
     private route: ActivatedRoute,
     private fcFilterDialogService: FcFilterDialogService,
@@ -86,7 +82,7 @@ export class CiviliansListComponent
     private fcToastService: FcToastService
   ) {
     this.layoutService.setHeaderConfig({
-      title: 'Warga',
+      title: 'Staff',
       icon: '',
       showHeader: true,
     });
@@ -98,8 +94,8 @@ export class CiviliansListComponent
         this.searchQuery = params.searchQuery ? params.searchQuery : '';
         this.layoutService.setSearchConfig({
           searchQuery: this.searchQuery,
-          featureName: 'users',
-          baseHref: '/users/list',
+          featureName: 'staff',
+          baseHref: '/staff/list',
         });
         if (params.order_by && params.direction) {
           this.fcFilterConfig.sort.selectedField = params.order_by;
@@ -123,7 +119,7 @@ export class CiviliansListComponent
     this.layoutService.searchConfigSubject
       .pipe(takeUntil(this.destroy$))
       .subscribe((config) => {
-        if (config.featureName == 'users') {
+        if (config.featureName == 'staff') {
           if (this.searchQuery != config.searchQuery) {
             this.searchQuery = config.searchQuery;
             this.loadData();
@@ -131,27 +127,11 @@ export class CiviliansListComponent
         }
       });
   }
+
   ngAfterContentInit(): void {}
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  setParam() {
-    let queryParams: any = {
-      page: this.page,
-      limit: this.rows,
-    };
-    if (this.searchQuery) {
-      queryParams.searchQuery = this.searchQuery;
-    }
-
-    // end filter conditions
-    this.router.navigate(['.'], {
-      relativeTo: this.route,
-      queryParams: queryParams,
-      replaceUrl: true,
-    });
   }
 
   loadData(
@@ -176,8 +156,8 @@ export class CiviliansListComponent
     dataListParameter.sortBy = sortBy;
     dataListParameter.filterObj = filterObj;
     dataListParameter.searchQuery = searchQuery;
-    this.civiliansService
-      .getCivilians(dataListParameter)
+    this.staffService
+      .getStaffs(dataListParameter)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         this.loading = false;
@@ -189,8 +169,25 @@ export class CiviliansListComponent
           this.totalRecords > this.rows
             ? Math.ceil(this.totalRecords / this.rows)
             : 1;
-        this.users = res.data.users;
+        this.staffs = res.data.users;
       });
+  }
+
+  setParam() {
+    let queryParams: any = {
+      page: this.page,
+      limit: this.rows,
+    };
+    if (this.searchQuery) {
+      queryParams.searchQuery = this.searchQuery;
+    }
+
+    // end filter conditions
+    this.router.navigate(['.'], {
+      relativeTo: this.route,
+      queryParams: queryParams,
+      replaceUrl: true,
+    });
   }
 
   onPageUpdate(pagination: any) {
@@ -205,54 +202,7 @@ export class CiviliansListComponent
     this.loadData(this.page);
   }
 
-  approveUser(userId: number, approve: number) {
-    let message = '';
-    if (approve == 1) {
-      message = 'menyetujui';
-    } else {
-      message = 'menolak';
-    }
-    this.fcConfirmService.open({
-      header: 'Confirmation',
-      message: `Apakah kamu yakin ingin ${message} registrasi user ini?`,
-      accept: () => {
-        this.civiliansService
-          .approveCivilianRegister(userId, approve)
-          .subscribe({
-            next: (res: any) => {
-              this.fcToastService.add({
-                severity: 'success',
-                header: 'Approve Pengguna',
-                message: res.message,
-              });
-              this.loadData();
-            },
-            error: (err) => {
-              this.fcToastService.add({
-                severity: 'error',
-                header: 'Approval Pengguna',
-                message: err.message,
-              });
-            },
-          });
-      },
-    });
-  }
-
-  navigateToDetail(user: User) {
-    this.router.navigate(['/civilians/view/', user.id]);
-  }
-
-  getStatusColor(status: number): string {
-    switch (status) {
-      case 0: //pending
-        return 'border border-gray-600 dark:border-gray-700 bg-gray-100 dark:bg-gray-700/20 text-gray-500';
-      case 1: // approve
-        return 'border border-green-600 dark:border-green-700 bg-green-100 dark:bg-green-700/20 text-green-500';
-      case 2: // cancel
-        return 'border border-red-600 dark:border-red-700 bg-red-100 dark:bg-red-700/20 text-red-500';
-      default:
-        return '';
-    }
+  navigateToDetail(staff: any) {
+    this.router.navigate(['/staff/view/', staff.id]);
   }
 }

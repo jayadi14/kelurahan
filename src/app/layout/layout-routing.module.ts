@@ -20,6 +20,11 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'staff',
+        loadChildren: () =>
+          import('../features/staff/staff.module').then((m) => m.StaffModule),
+      },
+      {
         path: 'template-ui',
         loadChildren: () =>
           import('../features/template-ui/template-ui.module').then(

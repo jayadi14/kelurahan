@@ -25,6 +25,7 @@
         formControlName="confirm_password" />
       <fc-select-option
         [options]="role"
+        (ngModelChange)="removeRW()"
         formControlName="role"
         [optionValue]="'id'"
         [optionLable]="'name'"

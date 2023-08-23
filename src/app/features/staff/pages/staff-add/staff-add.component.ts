@@ -124,6 +124,8 @@ export class StaffAddComponent implements OnInit, OnDestroy, AfterContentInit {
       if (
         this.staffForm.value.password == this.staffForm.value.confirm_password
       ) {
+
+
         let detailRegistration = {
           section_no: String(this.staffForm.value.section_no),
           parent_id: this.staffForm.value.parent
@@ -139,6 +141,7 @@ export class StaffAddComponent implements OnInit, OnDestroy, AfterContentInit {
           role: new FormControl(this.staffForm.value.role),
           detail: new FormControl(detailRegistration),
         });
+
 
         this.staffService.createStaff(bodyReqForm.value).subscribe({
           next: (res: any) => {

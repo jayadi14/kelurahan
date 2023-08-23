@@ -65,7 +65,11 @@ export class LayoutService {
       },
       {
         route: '/staff',
-        name: 'Staff RW/RT',
+        name: 'Staff RT/RW',
+      },
+      {
+        route: '/document-submission',
+        name: 'Pengajuan Dokumen',
       },
     ];
   }

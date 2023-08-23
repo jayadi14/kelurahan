@@ -25,6 +25,11 @@ const routes: Routes = [
           import('../features/staff/staff.module').then((m) => m.StaffModule),
       },
       {
+        path: 'document-submission',
+        loadChildren: () =>
+          import('../features/document-submission/document-submission.module').then((m) => m.DocumentSubmissionModule),
+      },
+      {
         path: 'template-ui',
         loadChildren: () =>
           import('../features/template-ui/template-ui.module').then(

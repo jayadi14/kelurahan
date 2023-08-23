@@ -1,0 +1,18 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar [isHasBackButton]="true" [actionButtons]="actionButtons" />
+  <form
+    [formGroup]="documentSubmissionForm"
+    class="body relative h-full w-full overflow-y-auto pt-5 text-xs">
+    <fc-select-option
+      [options]="document_type"
+      (ngModelChange)="removeType()"
+      formControlName="type"
+      [optionValue]="'id'"
+      [optionLable]="'name'"
+      title="Tipe Dokumen"
+      [placeholder]="'Pilih Dokumen'"
+      [desktopView]="'overlay'"
+      [mobileView]="'dialog'">
+    </fc-select-option>
+  </form>
+</div>

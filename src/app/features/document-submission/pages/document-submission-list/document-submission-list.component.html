@@ -1,0 +1,82 @@
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar
+    [actionButtons]="actionButtons"
+    [filterButtons]="filterButtons"></app-fc-action-bar>
+  <div
+    class="body @container h-full w-full overflow-y-auto text-xs mb-4 md:mb-0 lg:mb-0">
+    <!-- Data List -->
+    <div class="mt-2 grid gap-2" *ngIf="!loading">
+      <ng-container *ngFor="let document of documentSubmissions">
+        <div
+          class="fc-animate-translate-up grid cursor-pointer gap-2 items-center rounded-md border border-light-low bg-light-low p-3 hover:border-primary-light dark:border-dark-low dark:bg-dark-low hover:dark:border-primary-light lg:flex">
+          <div class="@lg:w-[100px] w-full space-y-1">
+            <p class="text-2xs text-black dark:text-slate-300">Tanggal:</p>
+            <p class="text-2xs">{{ document.created_at | date }}</p>
+          </div>
+
+          <div class="@lg:w-[180px] w-full space-y-1">
+            <p class="text-2xs text-black dark:text-slate-300">
+              Jenis Dokumen:
+            </p>
+            <p>
+              {{ document.type_name }}
+            </p>
+          </div>
+
+          <div class="@lg:w-[150px] w-full">
+            <p class="text-2xs text-black dark:text-slate-300">
+              Persetujuan Tingkat:
+            </p>
+            <p>
+              {{ document.stage_name }}
+            </p>
+          </div>
+
+          <div class="flex-1">
+            <div
+              [ngClass]="getStatusColor(document.status)"
+              class="rounded-md w-fit p-1 px-2">
+              {{ document.status_name }}
+            </div>
+          </div>
+          <div class="flex w-full justify-end lg:w-[150px]">
+            <!-- <button
+              (click)="approveUser(user.id, 1)"
+              type="button"
+              class="btn flex gap-1 btn-high">
+              <fa-icon [fixedWidth]="true" [icon]="faCheck"></fa-icon>
+              <p class="@lg:block hidden">Setuju</p>
+            </button>
+            <button
+              (click)="approveUser(user.id, 2)"
+              type="button"
+              class="btn flex gap-1 btn-high">
+              <fa-icon [fixedWidth]="true" [icon]="faX"></fa-icon>
+              <p class="@lg:block hidden">Tolak</p>
+            </button> -->
+            <button
+              type="button"
+              class="btn btn-high"
+              (click)="navigateToDetail(document)">
+              <fa-icon [fixedWidth]="true" [icon]="faEye"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="py-[20vh] text-center" *ngIf="loading">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+      <p>Loading . . .</p>
+    </div>
+  </div>
+  <div class="flex justify-end gap-3">
+    <div class="w-full lg:w-96">
+      <fc-pagination
+        [rows]="rows"
+        [page]="page"
+        [totalPages]="totalPages"
+        [totalRecords]="totalRecords"
+        (onPageUpdate)="onPageUpdate($event)"></fc-pagination>
+    </div>
+  </div>
+</div>

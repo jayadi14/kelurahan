@@ -60,8 +60,8 @@ export class LayoutService {
   getRoutes() {
     return [
       {
-        route: '/users',
-        name: 'Pengguna',
+        route: '/civilians',
+        name: 'Warga',
       },
     ];
   }

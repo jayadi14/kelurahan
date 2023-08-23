@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DarkModeService } from 'src/app/shared/services/dark-mode.service';
 import { AuthService } from 'src/app/features/auth/services/auth.service';
@@ -11,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { faChevronDown, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { DialogService } from 'primeng/dynamicdialog';
 import { RegisterSelectRtDialogComponent } from './components/register-select-rt-dialog/register-select-rt-dialog.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-register',
@@ -22,8 +19,8 @@ export class RegisterComponent {
   loading: boolean = false;
   darkMode: any;
   // Icons
-  faTimes = faTimes
-  faChevronDown = faChevronDown
+  faTimes = faTimes;
+  faChevronDown = faChevronDown;
 
   gender = [
     {
@@ -70,7 +67,7 @@ export class RegisterComponent {
     private darkModeService: DarkModeService,
     private router: Router,
     private messageService: MessageService,
-    private dialogService: DialogService,
+    private dialogService: DialogService
   ) {
     this.registerForm = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -93,7 +90,7 @@ export class RegisterComponent {
 
   ngOnInit(): void {}
 
-  onSelectRW(){
+  onSelectRW() {
     const ref = this.dialogService.open(RegisterSelectRtDialogComponent, {
       data: {
         title: 'Pilih RW',
@@ -112,19 +109,23 @@ export class RegisterComponent {
     ref.onClose.subscribe((rw) => {
       if (rw) {
         this.registerForm.controls['rw'].setValue(rw);
-        this.rt = rw.children
+        this.rt = rw.children;
       }
     });
   }
 
-  removeRW(){
-    this.registerForm.controls['rw'].setValue('');
-    this.registerForm.controls['rt'].setValue('');
+  removeRW() {
+    this.registerForm.controls['rw'].setValue(null);
+    this.rt = [];
+    this.registerForm.controls['rt'].setValue(null);
   }
 
   submit() {
-    if(this.registerForm.valid){
-      if(this.registerForm.value.password == this.registerForm.value.confirm_password){
+    if (this.registerForm.valid) {
+      if (
+        this.registerForm.value.password ==
+        this.registerForm.value.confirm_password
+      ) {
         let detailRegistration = {
           birth_place: this.registerForm.value.birth_place,
           birth_date: this.registerForm.value.birth_date,
@@ -132,50 +133,48 @@ export class RegisterComponent {
           nik: this.registerForm.value.nik,
           rt: this.registerForm.value.rt,
           rw: this.registerForm.value.rw.section_no,
-          phone_no: this.registerForm.value.phone_no,
+          phone_no: String(this.registerForm.value.phone_no),
           religion: this.registerForm.value.religion,
-        }
-        let currentBirthDate = detailRegistration.birth_date
-        detailRegistration.birth_date = currentBirthDate.transform(currentBirthDate, 'yyyy-MM-ddTHH:mm:ss.00');
-        detailRegistration.birth_date = detailRegistration.birth_date.toISOString()
+        };
+        // Handling Date
+        let stringDate = detailRegistration.birth_date.toISOString();
+        let currentBirthDate = new Date(stringDate);
+        const datePipe = new DatePipe('en-US');
+        const formattedDate = datePipe.transform(
+          currentBirthDate,
+          'yyyy-MM-ddTHH:mm:ss'
+        );
+        detailRegistration.birth_date = formattedDate;
+
         let bodyReqForm: FormGroup;
         bodyReqForm = new FormGroup({
-          name: new FormControl(
-            (this.registerForm.value.name)
-          ),
-          email: new FormControl(
-            (this.registerForm.value.email)
-          ),
-          password: new FormControl(
-            (this.registerForm.value.password)
-          ),
-          detail: new FormControl(
-            (detailRegistration)
-          ),
-        })
-        console.log(bodyReqForm.value)
-        // this.authService.register(bodyReqForm.value).subscribe({
-        //   next: (res: any) => {
-        //     this.loading = false;
-        //     this.messageService.clear();
-        //     this.messageService.add({
-        //       severity: 'success',
-        //       summary: 'Register',
-        //       detail: res.message,
-        //     });
-        //     this.router.navigate(['/auth/login']);
-        //   },
-        //   error: (err) => {
-        //     this.loading = false;
-        //     this.messageService.clear();
-        //     this.messageService.add({
-        //       severity: 'error',
-        //       summary: 'Register',
-        //       detail: err.message,
-        //     });
-        //   },
-        // });
-      }else{
+          name: new FormControl(this.registerForm.value.name),
+          email: new FormControl(this.registerForm.value.email),
+          password: new FormControl(this.registerForm.value.password),
+          detail: new FormControl(detailRegistration),
+        });
+        this.authService.register(bodyReqForm.value).subscribe({
+          next: (res: any) => {
+            this.loading = false;
+            this.messageService.clear();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Registrasi',
+              detail: res.message,
+            });
+            this.router.navigate(['/auth/login']);
+          },
+          error: (err) => {
+            this.loading = false;
+            this.messageService.clear();
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Registrasi',
+              detail: err.message,
+            });
+          },
+        });
+      } else {
         this.messageService.clear();
         this.messageService.add({
           severity: 'error',
@@ -183,14 +182,13 @@ export class RegisterComponent {
           detail: 'Konfirmasi Password Tidak Sama',
         });
       }
-    }else{
+    } else {
       this.messageService.clear();
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Register',
-          detail: 'Isi semua data dengan benar',
-        });
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Register',
+        detail: 'Isi semua data dengan benar',
+      });
     }
-
   }
 }

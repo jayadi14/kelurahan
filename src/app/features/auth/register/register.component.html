@@ -42,17 +42,15 @@
               </fc-input-text>
             </div>
             <div class="w-full">
-              <fc-input-text
-                [type]="'text'"
-                [title]="'Nomor Handphone'"
-                [placeholder]="'Masukkan Nomor Handphone Anda'"
-                formControlName="phone_no">
-              </fc-input-text>
+              <fc-input-number
+                title="Nomor Handphone"
+                formControlName="phone_no"
+                placeholder="Masukkan Nomor Handphone"></fc-input-number>
             </div>
             <div class="w-full">
               <fc-input-text
                 [type]="'password'"
-                [title]="'Password (Harus Lebih dari 8 Karakter)'"
+                [title]="'Password'"
                 [placeholder]="'Masukkan Password Anda'"
                 formControlName="password">
               </fc-input-text>

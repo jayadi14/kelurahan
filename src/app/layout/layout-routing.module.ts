@@ -13,10 +13,10 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'users',
+        path: 'civilians',
         loadChildren: () =>
-          import('../features/users/users.module').then(
-            (m) => m.UsersModule
+          import('../features/civilians/civilians.module').then(
+            (m) => m.CiviliansModule
           ),
       },
       {

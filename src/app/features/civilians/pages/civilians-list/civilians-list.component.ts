@@ -16,20 +16,20 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FcFilterConfig } from '@shared/components/fc-filter-dialog/interfaces/fc-filter-config';
 import { LayoutService } from 'src/app/layout/services/layout.service';
-import { UsersService } from '@features/users/services/users.services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FcFilterDialogService } from '@shared/components/fc-filter-dialog/services/fc-filter-dialog.service';
-import { User } from '@features/users/interfaces/users';
 import { DataListParameter } from '@shared/interfaces/data-list-parameter.interface';
 import { FcConfirmService } from '@shared/components/fc-confirm/fc-confirm.service';
 import { FcToastService } from '@shared/components/fc-toast/fc-toast.service';
+import { CiviliansService } from '@features/civilians/services/civilians.service';
+import { User } from '@features/civilians/interfaces/civilian';
 
 @Component({
-  selector: 'app-users-list',
-  templateUrl: './users-list.component.html',
-  styleUrls: ['./users-list.component.css']
+  selector: 'app-civilians-list',
+  templateUrl: './civilians-list.component.html',
+  styleUrls: ['./civilians-list.component.css'],
 })
-export class UsersListComponent
+export class CiviliansListComponent
   implements OnInit, AfterContentInit, OnDestroy
 {
   private destroy$: any = new Subject();
@@ -72,7 +72,7 @@ export class UsersListComponent
         this.loadData();
       },
     },
-  ]
+  ];
 
   fcFilterConfig: FcFilterConfig = {
     filterFields: [],
@@ -86,19 +86,19 @@ export class UsersListComponent
     },
   };
 
-  users: User[] = []
+  users: User[] = [];
 
   constructor(
     private layoutService: LayoutService,
-    private userService: UsersService,
+    private civiliansService: CiviliansService,
     private router: Router,
     private route: ActivatedRoute,
     private fcFilterDialogService: FcFilterDialogService,
     private fcConfirmService: FcConfirmService,
-    private fcToastService: FcToastService,
+    private fcToastService: FcToastService
   ) {
     this.layoutService.setHeaderConfig({
-      title: 'Pengguna',
+      title: 'Warga',
       icon: '',
       showHeader: true,
     });
@@ -175,7 +175,7 @@ export class UsersListComponent
     sortBy: string = this.fcFilterDialogService.getSortString(
       this.fcFilterConfig
     )
-  ){
+  ) {
     this.setParam();
     this.loading = true;
     this.layoutService.setSearchConfig({
@@ -188,8 +188,8 @@ export class UsersListComponent
     dataListParameter.sortBy = sortBy;
     dataListParameter.filterObj = filterObj;
     dataListParameter.searchQuery = searchQuery;
-    this.userService
-      .getUsers(dataListParameter)
+    this.civiliansService
+      .getCivilians(dataListParameter)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         this.loading = false;
@@ -217,19 +217,19 @@ export class UsersListComponent
     this.loadData(this.page);
   }
 
-  approveUser(userId:number, approve:number){
-    let message = ''
-    if(approve == 1){
-      message = "menyetujui"
-    }else{
-      message = "menolak"
+  approveUser(userId: number, approve: number) {
+    let message = '';
+    if (approve == 1) {
+      message = 'menyetujui';
+    } else {
+      message = 'menolak';
     }
     this.fcConfirmService.open({
       header: 'Confirmation',
-      message:  `Apakah kamu yakin ingin ${message} registrasi user ini?`,
+      message: `Apakah kamu yakin ingin ${message} registrasi user ini?`,
       accept: () => {
-        this.userService
-          .approveUserRegister(userId,approve)
+        this.civiliansService
+          .approveCivilianRegister(userId, approve)
           .subscribe({
             next: (res: any) => {
               this.fcToastService.add({
@@ -237,7 +237,7 @@ export class UsersListComponent
                 header: 'Approve Pengguna',
                 message: res.message,
               });
-              this.loadData()
+              this.loadData();
             },
             error: (err) => {
               this.fcToastService.add({
@@ -249,6 +249,10 @@ export class UsersListComponent
           });
       },
     });
+  }
+
+  navigateToDetail(user: User) {
+    this.router.navigate(['/civilians/view/', user.id]);
   }
 
   getStatusColor(status: number): string {

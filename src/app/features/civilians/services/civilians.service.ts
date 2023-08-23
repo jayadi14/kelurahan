@@ -3,17 +3,16 @@ import { Injectable } from '@angular/core';
 import { environment } from '@env';
 import { AuthService } from '@features/auth/services/auth.service';
 import { DataListParameter } from '@shared/interfaces/data-list-parameter.interface';
-import { map } from 'rxjs';
 
 const ROOT_API = environment.API_URL;
 
 @Injectable({
   providedIn: 'root',
 })
-export class UsersService {
+export class CiviliansService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getUsers(dataListParameter: DataListParameter = {} as DataListParameter) {
+  getCivilians(dataListParameter: DataListParameter = {} as DataListParameter) {
     let param = '';
     if (dataListParameter.rows && dataListParameter.page) {
       param = param.concat(
@@ -37,7 +36,14 @@ export class UsersService {
     return this.http.get(`${ROOT_API}/users/lists${param}`);
   }
 
-  approveUserRegister(userId:number, approval:number){
-    return this.http.put(`${ROOT_API}/users/approval/${userId}?status=${approval}`, {});
+  getCivilian(id: number) {
+    return this.http.get(`${ROOT_API}/users/details/${id}`);
+  }
+
+  approveCivilianRegister(userId: number, approval: number) {
+    return this.http.put(
+      `${ROOT_API}/users/approval/${userId}?status=${approval}`,
+      {}
+    );
   }
 }

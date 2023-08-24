@@ -1,12 +1,12 @@
 import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { Subject, takeUntil } from 'rxjs';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AuthService } from '@features/auth/services/auth.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '@features/auth/services/auth.service';
+import { faFile, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FcFilterDialogService } from '@shared/components/fc-filter-dialog/services/fc-filter-dialog.service';
 import { MessageService } from 'primeng/api';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-civilians-approval-note-dialog',
@@ -19,10 +19,11 @@ export class CiviliansApprovalNoteDialogComponent
   private destroy$: any = new Subject();
   // Icons
   faTimes = faTimes;
+  faFile = faFile;
   title = '';
 
   approvalForm: FormGroup;
-
+  type: string = '';
   constructor(
     private ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
@@ -35,10 +36,18 @@ export class CiviliansApprovalNoteDialogComponent
     if (this.config.data.title) {
       this.title = this.config.data.title;
     }
-
-    this.approvalForm = new FormGroup({
-      note: new FormControl(null, Validators.required),
-    });
+    if (this.config.data.type) {
+      this.type = this.config.data.type;
+      this.approvalForm = new FormGroup({
+        note: new FormControl(null),
+        file: new FormControl(null, Validators.required),
+      });
+    } else {
+      this.approvalForm = new FormGroup({
+        note: new FormControl(null, Validators.required),
+        file: new FormControl(null),
+      });
+    }
   }
 
   ngOnInit(): void {}
@@ -57,9 +66,14 @@ export class CiviliansApprovalNoteDialogComponent
   }
 
   submit() {
+    console.log(this.approvalForm.value);
     this.ref.close(this.approvalForm.value);
   }
-
+  addFile(file: any) {
+    this.approvalForm.patchValue({
+      file: file.file,
+    });
+  }
   onClose() {
     this.ref.close();
   }

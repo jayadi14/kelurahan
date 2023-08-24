@@ -299,7 +299,7 @@ export class DocumentSubmissionViewComponent {
           CiviliansApprovalNoteDialogComponent,
           {
             data: {
-              title: 'Tolak Registrasi',
+              title: 'Tolak Dokumen',
             },
             showHeader: false,
             contentStyle: {
@@ -317,7 +317,7 @@ export class DocumentSubmissionViewComponent {
           if (data) {
             let fd = new FormData();
             fd.append('note', data.note);
-            fd.append('status', '1');
+            fd.append('status', '0');
             this.documentSubmissionService
               .setProgressocumentSubmission(this.documentSubmission.id, fd)
               .subscribe({
@@ -329,7 +329,7 @@ export class DocumentSubmissionViewComponent {
                   });
                   this.actionButtons[0].hidden = true;
                   this.actionButtons[1].hidden = true;
-                  this.router.navigate(['/civilians/list']);
+                  this.back();
                 },
                 error: (err) => {
                   this.fcToastService.add({
@@ -354,7 +354,8 @@ export class DocumentSubmissionViewComponent {
           CiviliansApprovalNoteDialogComponent,
           {
             data: {
-              title: 'Tolak Registrasi',
+              title: 'Terima dokumen',
+              type: 'approve',
             },
             showHeader: false,
             contentStyle: {
@@ -371,7 +372,7 @@ export class DocumentSubmissionViewComponent {
         ref.onClose.subscribe((data) => {
           if (data) {
             let fd = new FormData();
-            fd.append('note', data.note);
+            fd.append('file', data.file);
             fd.append('status', '1');
             this.documentSubmissionService
               .setProgressocumentSubmission(this.documentSubmission.id, fd)
@@ -384,12 +385,12 @@ export class DocumentSubmissionViewComponent {
                   });
                   this.actionButtons[0].hidden = true;
                   this.actionButtons[1].hidden = true;
-                  this.router.navigate(['/civilians/list']);
+                  this.back();
                 },
                 error: (err) => {
                   this.fcToastService.add({
                     severity: 'error',
-                    header: 'Tolak Registrasi Warga',
+                    header: 'Terima Dokumen Warga',
                     message: err.message,
                   });
                 },

@@ -13,12 +13,34 @@
       [formGroup]="approvalForm"
       class="body w-full overflow-y-auto @container dark:bg-dark-high">
       <div class="grid">
-        <fc-input-text
-          [type]="'text'"
-          [title]="'Catatan'"
-          [placeholder]="'Masukkan Catatan'"
-          formControlName="note">
-        </fc-input-text>
+        <ng-container *ngIf="type != 'approve'">
+          <fc-input-text
+            [type]="'text'"
+            [title]="'Catatan'"
+            [placeholder]="'Masukkan Catatan'"
+            formControlName="note">
+          </fc-input-text>
+        </ng-container>
+        <ng-container *ngIf="type == 'approve'">
+          <fc-file-input class="flex-1 mt-3" (onInput)="addFile($event)">
+            <div
+              class="form-input border border-transparent flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest">
+              <p
+                class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+                Klik untuk memilih file
+              </p>
+              <div class="text-xs space-y-2">
+                <ng-container *ngIf="approvalForm.value.file">
+                  <fa-icon [icon]="faFile" [fixedWidth]="true"></fa-icon>
+                  <span>{{ approvalForm.value.file.name }} </span>
+                </ng-container>
+                <ng-container *ngIf="!approvalForm.value.file">
+                  Belum ada file yang dipilih
+                </ng-container>
+              </div>
+            </div>
+          </fc-file-input>
+        </ng-container>
       </div>
     </form>
   </div>

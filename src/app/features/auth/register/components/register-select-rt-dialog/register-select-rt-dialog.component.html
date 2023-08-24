@@ -26,15 +26,15 @@
     <div
       class="customer-list h-[400px] overflow-auto rounded dark:bg-dark-high">
       <div class="space-y-2" *ngIf="!loading">
-        <ng-container *ngFor="let rt of rtLists">
+        <ng-container *ngFor="let rw of rwLists">
           <button
             class="grid w-full cursor-pointer items-center gap-2 rounded-md border border-light-low bg-light-low p-2 text-left text-xs hover:border-primary-light dark:border-dark-low dark:bg-dark-low hover:dark:border-primary-light"
-            (click)="submit(rt)">
-            <p>{{ rt.section_no }}</p>
+            (click)="submit(rw)">
+            <p>RW {{ rw.section_no }}</p>
           </button>
         </ng-container>
       </div>
-      <div class="py-[15vh] text-center" *ngIf="!rtLists && !loading">
+      <div class="py-[15vh] text-center" *ngIf="!rwLists && !loading">
         <img
           class="object-cover mx-auto w-32 rounded-lg"
           src="assets/images/bg/empty.png" />

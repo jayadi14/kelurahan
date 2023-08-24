@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   appName: 'Sistem Informasi Kelurahan',
   // appVersion: require('../../package.json').version + '-dev',
-  API_URL: 'http://127.0.0.1:8000/api/v1',
+  API_URL: 'http://192.168.1.17:8000/api/v1',
   locale_string: 'IDR',
   default_currency_code: 'id',
 };

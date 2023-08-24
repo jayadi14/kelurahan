@@ -4,6 +4,8 @@ import { FcInputTextModule } from '@shared/components/fc-input-text/fc-input-tex
 import { SharedModule } from '@shared/shared.module';
 import { UserProfileRoutingModule } from './user-profile-routing.module';
 import { UserProfileComponent } from './user-profile.component';
+import { FcDatepickerModule } from '@shared/components/fc-datepicker/fc-datepicker.module';
+import { FcInputNumberModule } from '@shared/components/fc-input-number/fc-input-number.module';
 
 @NgModule({
   declarations: [UserProfileComponent],
@@ -12,6 +14,8 @@ import { UserProfileComponent } from './user-profile.component';
     SharedModule,
     UserProfileRoutingModule,
     FcInputTextModule,
+    FcDatepickerModule,
+    FcInputNumberModule,
   ],
 })
 export class UserProfileModule {}

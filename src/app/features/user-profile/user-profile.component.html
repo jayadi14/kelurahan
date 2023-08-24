@@ -2,49 +2,87 @@
   <app-fc-action-bar
     [isHasBackButton]="true"
     [actionButtons]="actionButtons"></app-fc-action-bar>
-  <div class="body h-full w-full overflow-y-auto text-xs py-5" *ngIf="!loading">
-    <form [formGroup]="userForm" class="grid w-full gap-3 lg:grid-cols-2">
+  <div class="body h-full w-full text-xs py-5" *ngIf="!loading">
+    <div
+      *ngIf="user.civilian?.note && user.civilian?.status == 2"
+      class="border p-1 px-2 flex items-center justify-between rounded-md border-red-600 dark:border-red-700 bg-red-100 dark:bg-red-700/20">
+      <div>
+        <p class="font-bold text-md capitalize">Registrasi Ditolak!</p>
+        <p class="text-xs mt-2">Catatan : {{ user.civilian.note }}</p>
+      </div>
+    </div>
+    <form [formGroup]="userForm" class="w-full mt-3 grid gap-3">
       <fc-input-text
-        inputId="name"
+        [disabled]="user.role > 0 || user.civilian?.status < 1"
         formControlName="name"
         title="Name"
-        placeholder="Enter Name"></fc-input-text>
-      <label
-        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low"
-        for="email">
-        <p
-          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
-          Email
-        </p>
-        <p>
-          {{ user.email }}
-        </p>
-      </label>
+        placeholder="Masukkan Nama" />
       <fc-input-text
-        inputId="phone_no"
+        [disabled]="user.role > 0 || user.civilian?.status < 1"
+        formControlName="email"
+        title="Email"
+        placeholder="Masukkan Email" />
+      <fc-input-number
+        *ngIf="user.civilian"
+        [disabled]="user.role > 0 || user.civilian?.status < 1"
+        title="Nomor Handphone"
         formControlName="phone_no"
-        title="Phone Number"
-        placeholder="Enter Phone Number"></fc-input-text>
+        placeholder="Masukkan Nomor Handphone" />
       <fc-input-text
-        inputId="address"
-        formControlName="address"
-        title="Address"
-        placeholder="Enter Address"></fc-input-text>
-      <label
-        formGroupName="staff"
-        class="form-input flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low lg:col-span-2"
-        for="note">
-        <p
-          class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
-          Note
-        </p>
-        <textarea
-          class="m-0 h-24 w-full bg-light-lowest p-0 text-xs ring-0 focus:outline-none focus:ring-0 dark:bg-dark-low"
-          type="text"
-          formControlName="note"
-          id="note"
-          placeholder="Enter Your Note"></textarea>
-      </label>
+        *ngIf="user.civilian"
+        [disabled]="user.role > 0 || user.civilian?.status < 1"
+        formControlName="birth_place"
+        title="Tempat Lahir"
+        placeholder="Masukkan Tempat Lahir" />
+      <fc-datepicker
+        *ngIf="user.civilian"
+        [disabled]="user.role > 0 || user.civilian?.status < 1"
+        [placeholder]="'Tanggal Lahir'"
+        title="Tanggal Lahir"
+        formControlName="birth_date" />
+      <fc-select-option
+        *ngIf="user.civilian"
+        [disabled]="user.role > 0 || user.civilian?.status < 1"
+        [options]="gender"
+        formControlName="gender"
+        [optionValue]="'id'"
+        [optionLable]="'name'"
+        title="Jenis Kelamin"
+        [placeholder]="'Pilih Jenis Kelamin'"
+        [desktopView]="'overlay'"
+        [mobileView]="'dialog'" />
+      <fc-input-text
+        *ngIf="user.civilian"
+        [disabled]="user.role > 0 || user.civilian?.status < 1"
+        [type]="'text'"
+        [title]="'NIK'"
+        [placeholder]="'Masukkan NIK Anda'"
+        formControlName="nik" />
+      <fc-input-text
+        *ngIf="user.civilian"
+        [disabled]="true"
+        [type]="'text'"
+        [title]="'RW'"
+        [placeholder]="'Masukkan RW Anda'"
+        formControlName="rw" />
+      <fc-input-text
+        *ngIf="user.civilian"
+        [disabled]="true"
+        [type]="'text'"
+        [title]="'RT'"
+        [placeholder]="'Masukkan RT Anda'"
+        formControlName="rt" />
+      <fc-select-option
+        *ngIf="user.civilian"
+        [disabled]="user.role > 0 || user.civilian?.status < 1"
+        [options]="religion"
+        formControlName="religion"
+        [optionValue]="'name'"
+        [optionLable]="'name'"
+        title="Agama"
+        [placeholder]="'Pilih Agama'"
+        [desktopView]="'overlay'"
+        [mobileView]="'dialog'" />
     </form>
   </div>
   <div class="py-[20vh] text-center" *ngIf="loading">

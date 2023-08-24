@@ -40,10 +40,7 @@ export class CiviliansService {
     return this.http.get(`${ROOT_API}/users/details/${id}`);
   }
 
-  approveCivilianRegister(userId: number, approval: number) {
-    return this.http.put(
-      `${ROOT_API}/users/approval/${userId}?status=${approval}`,
-      {}
-    );
+  approveCivilianRegister(userId: number, data: any) {
+    return this.http.put(`${ROOT_API}/users/approval/${userId}`, data);
   }
 }

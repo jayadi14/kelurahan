@@ -10,12 +10,14 @@ import { CiviliansListComponent } from './pages/civilians-list/civilians-list.co
 import { CiviliansViewComponent } from './pages/civilians-view/civilians-view.component';
 import { FcInputTextModule } from '@shared/components/fc-input-text/fc-input-text.module';
 import { FcDatepickerModule } from '@shared/components/fc-datepicker/fc-datepicker.module';
+import { CiviliansApprovalNoteDialogComponent } from './components/civilians-approval-note-dialog/civilians-approval-note-dialog.component';
 
 @NgModule({
   declarations: [
     CiviliansComponent,
     CiviliansListComponent,
     CiviliansViewComponent,
+    CiviliansApprovalNoteDialogComponent,
   ],
   imports: [
     CommonModule,

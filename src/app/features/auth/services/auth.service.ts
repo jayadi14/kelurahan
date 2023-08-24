@@ -48,6 +48,11 @@ export class AuthService {
           this.currentUserTokensSubject.next(res.data.access_token);
           localStorage.setItem('user', JSON.stringify(res.data.user));
           this.currentUserDataSubject.next(res.data.user);
+          if (res.data.user.civilian?.status == 2) {
+            this.router.navigate(['/user-profile']);
+          } else {
+            this.router.navigate(['/']);
+          }
           return true;
         } else {
           return false;

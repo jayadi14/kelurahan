@@ -28,7 +28,7 @@ export class RegisterSelectRtDialogComponent
   page = 1;
   rows = 10;
   title = '';
-  rtLists:any
+  rwLists:any
 
   fcFilterConfig: FcFilterConfig = {
     filterFields: [],
@@ -96,7 +96,7 @@ export class RegisterSelectRtDialogComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         this.loading = false;
-        this.rtLists = res.data;
+        this.rwLists = res.data;
       });
   }
 

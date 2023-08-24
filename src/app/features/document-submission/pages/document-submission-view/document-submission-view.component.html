@@ -59,5 +59,39 @@
         </ng-container>
       </div>
     </ng-container>
+    <ng-container *ngIf="documentSubmission.document_progresses.length > 0">
+      <h3>Progres Dokumen</h3>
+      <div
+        class="flex gap-2 w-full items-center"
+        *ngFor="
+          let document of documentSubmission.document_progresses;
+          let i = index
+        ">
+        <div
+          class="form-input w-full border border-transparent flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest">
+          <p
+            *ngIf="document.downloadLink"
+            class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+            File Progress
+          </p>
+          <div class="text-xs space-y-2">
+            <ng-container>
+              <fa-icon [icon]="faFile" [fixedWidth]="true"></fa-icon>
+              <span>{{ document.status_name }} </span>
+            </ng-container>
+          </div>
+        </div>
+        <ng-container *ngIf="document.downloadLink">
+          <a target="_blank" [href]="document.downloadLink">
+            <button
+              title="Download File"
+              type="button"
+              class="p-3 rounded-md hover:bg-light-low dark:hover:bg-dark-low">
+              <fa-icon [fixedWidth]="true" [icon]="faDownload"></fa-icon>
+            </button>
+          </a>
+        </ng-container>
+      </div>
+    </ng-container>
   </form>
 </div>

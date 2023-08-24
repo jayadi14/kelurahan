@@ -188,7 +188,14 @@ export class DocumentSubmissionViewComponent {
               );
             }
           );
-          console.log(this.documentAttachments.value);
+          this.documentSubmission.document_progresses.forEach(
+            (progress: any) => {
+              if (progress.status == 1) {
+                progress.downloadLink = `${environment.domain}/${progress.file_path}`;
+              }
+            }
+          );
+          console.log(this.documentSubmission.document_progresses);
         },
       });
   }

@@ -27,10 +27,10 @@ import { LayoutService } from 'src/app/layout/services/layout.service';
 @Component({
   selector: 'app-document-submission-list',
   templateUrl: './document-submission-list.component.html',
-  styleUrls: ['./document-submission-list.component.css']
+  styleUrls: ['./document-submission-list.component.css'],
 })
 export class DocumentSubmissionListComponent
-implements OnInit, AfterContentInit, OnDestroy
+  implements OnInit, AfterContentInit, OnDestroy
 {
   private destroy$: any = new Subject();
   // Icons
@@ -73,7 +73,7 @@ implements OnInit, AfterContentInit, OnDestroy
     },
   };
 
-  documentSubmissions: DocumentSubmission[] = []
+  documentSubmissions: DocumentSubmission[] = [];
 
   constructor(
     private layoutService: LayoutService,
@@ -213,10 +213,10 @@ implements OnInit, AfterContentInit, OnDestroy
     switch (status) {
       case 0: //pending
         return 'border border-gray-600 dark:border-gray-700 bg-gray-100 dark:bg-gray-700/20 text-gray-500';
-      case 1: // approve
-        return 'border border-green-600 dark:border-green-700 bg-green-100 dark:bg-green-700/20 text-green-500';
-      case 2: // cancel
+      case 1: // revisi
         return 'border border-red-600 dark:border-red-700 bg-red-100 dark:bg-red-700/20 text-red-500';
+      case 2: // selesai
+        return 'border border-green-600 dark:border-green-700 bg-green-100 dark:bg-green-700/20 text-green-500';
       default:
         return '';
     }

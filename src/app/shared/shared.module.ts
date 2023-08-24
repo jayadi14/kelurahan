@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // import { CurrencyMaskInputMode, NgxCurrencyModule } from 'ngx-currency';
+import { AbilityModule } from '@casl/angular';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
@@ -52,6 +53,7 @@ import { FcCurrencyPipe } from './pipes/fc-currency.pipe';
     FcSelectOptionModule,
     ConfirmDialogModule,
     ClickOutsideDirective,
+    AbilityModule,
   ],
   providers: [DialogService],
 })

@@ -5,6 +5,8 @@ import {
   provideClientHydration,
 } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Ability, PureAbility } from '@casl/ability';
+import { AbilityModule } from '@casl/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FcConfirmModule } from '@shared/components/fc-confirm/fc-confirm.module';
 import { FcToastModule } from '@shared/components/fc-toast/fc-toast.module';
@@ -33,8 +35,15 @@ export function playerFactory() {
     FcToastModule,
     LottieModule.forRoot({ player: playerFactory }),
     FcConfirmModule,
+    AbilityModule,
   ],
-  providers: [provideClientHydration(), MessageService, ConfirmationService],
+  providers: [
+    provideClientHydration(),
+    MessageService,
+    ConfirmationService,
+    { provide: Ability, useValue: new Ability() },
+    { provide: PureAbility, useExisting: Ability },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Ability, AbilityBuilder } from '@casl/ability';
 import { DataListParameter } from '@shared/interfaces/data-list-parameter.interface';
 import { CookieService } from '@shared/services/cookie.service';
 import { BehaviorSubject } from 'rxjs';
@@ -19,7 +20,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private ability: Ability
   ) {
     this.currentUserTokensSubject = new BehaviorSubject(
       JSON.parse(localStorage.getItem('access_token') as string)
@@ -27,6 +29,9 @@ export class AuthService {
     this.currentUserDataSubject = new BehaviorSubject(
       JSON.parse(localStorage.getItem('user') as string)
     );
+    if (this.currentUserTokensSubject.value) {
+      this.updateAbility(this.currentUserDataSubject.value);
+    }
   }
 
   public get getCurrentUserTokens() {
@@ -53,6 +58,7 @@ export class AuthService {
           } else {
             this.router.navigate(['/']);
           }
+          this.updateAbility(res.data.user);
           return true;
         } else {
           return false;
@@ -106,5 +112,10 @@ export class AuthService {
   }
   register(registerData: any) {
     return this.http.post(ROOT_API_URL + '/auth/register', registerData);
+  }
+  private updateAbility(user: any) {
+    const { can, rules } = new AbilityBuilder(Ability);
+    can('read', 'all');
+    this.ability.update(rules);
   }
 }

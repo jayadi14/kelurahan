@@ -115,7 +115,27 @@ export class AuthService {
   }
   private updateAbility(user: any) {
     const { can, rules } = new AbilityBuilder(Ability);
-    can('read', 'all');
+    if (user.role == 'admin') {
+      can('civiliant', 'all');
+    } else if (user.role == 2) {
+    }
+    switch (user.role) {
+      case 0:
+        can('civiliant', 'all');
+        break;
+      case 1:
+        can('lurah', 'all');
+        break;
+      case 2:
+        can('rt', 'all');
+        break;
+      case 3:
+        can('rw', 'all');
+        break;
+      default:
+        break;
+    }
+
     this.ability.update(rules);
   }
 }

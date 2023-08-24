@@ -160,6 +160,7 @@ export class DocumentSubmissionViewComponent {
       type: new FormControl(null, Validators.required),
       document_attachments: new FormArray([]),
     });
+    this.generateActionButtons();
   }
 
   ngOnInit(): void {
@@ -195,6 +196,14 @@ export class DocumentSubmissionViewComponent {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+  generateActionButtons() {
+    if (!this.ability.can('civilians', 'all')) {
+      this.actionButtons[0].hidden = false;
+    }
+    if (!this.ability.can('civilians', 'all')) {
+      this.actionButtons[1].hidden = false;
+    }
   }
 
   submit() {

@@ -293,7 +293,7 @@ export class DocumentSubmissionViewComponent {
   rejectRegistration() {
     this.fcConfirmService.open({
       header: 'Confirmation',
-      message: `Apakah kamu yakin ingin menolak registrasi user ini?`,
+      message: `Apakah kamu yakin ingin menolak dokumen ini?`,
       accept: () => {
         const ref = this.dialogService.open(
           CiviliansApprovalNoteDialogComponent,
@@ -315,21 +315,71 @@ export class DocumentSubmissionViewComponent {
         );
         ref.onClose.subscribe((data) => {
           if (data) {
-            let bodyReqForm: FormGroup;
-            bodyReqForm = new FormGroup({
-              note: new FormControl(data.note),
-              status: new FormControl(2),
-            });
+            let fd = new FormData();
+            fd.append('note', data.note);
+            fd.append('status', '1');
             this.documentSubmissionService
-              .setProgressocumentSubmission(
-                this.documentSubmission.id,
-                bodyReqForm.value
-              )
+              .setProgressocumentSubmission(this.documentSubmission.id, fd)
               .subscribe({
                 next: (res: any) => {
                   this.fcToastService.add({
                     severity: 'success',
-                    header: 'Tolak Registrasi Warga',
+                    header: 'Tolak  Dokumen',
+                    message: res.message,
+                  });
+                  this.actionButtons[0].hidden = true;
+                  this.actionButtons[1].hidden = true;
+                  this.router.navigate(['/civilians/list']);
+                },
+                error: (err) => {
+                  this.fcToastService.add({
+                    severity: 'error',
+                    header: 'Tolak Dokumen',
+                    message: err.message,
+                  });
+                },
+              });
+          }
+        });
+      },
+    });
+  }
+
+  approveUser() {
+    this.fcConfirmService.open({
+      header: 'Confirmation',
+      message: `Apakah kamu yakin ingin menyetujui dokumen ini?`,
+      accept: () => {
+        const ref = this.dialogService.open(
+          CiviliansApprovalNoteDialogComponent,
+          {
+            data: {
+              title: 'Tolak Registrasi',
+            },
+            showHeader: false,
+            contentStyle: {
+              padding: '0',
+            },
+            style: {
+              overflow: 'hidden',
+            },
+            styleClass: 'rounded-sm',
+            dismissableMask: true,
+            width: '450px',
+          }
+        );
+        ref.onClose.subscribe((data) => {
+          if (data) {
+            let fd = new FormData();
+            fd.append('note', data.note);
+            fd.append('status', '1');
+            this.documentSubmissionService
+              .setProgressocumentSubmission(this.documentSubmission.id, fd)
+              .subscribe({
+                next: (res: any) => {
+                  this.fcToastService.add({
+                    severity: 'success',
+                    header: 'Terima Dokumen',
                     message: res.message,
                   });
                   this.actionButtons[0].hidden = true;
@@ -346,43 +396,6 @@ export class DocumentSubmissionViewComponent {
               });
           }
         });
-      },
-    });
-  }
-
-  approveUser() {
-    this.fcConfirmService.open({
-      header: 'Confirmation',
-      message: `Apakah kamu yakin ingin menyetujui registrasi user ini?`,
-      accept: () => {
-        let bodyReqForm: FormGroup;
-        bodyReqForm = new FormGroup({
-          status: new FormControl(1),
-        });
-        this.documentSubmissionService
-          .setProgressocumentSubmission(
-            this.documentSubmission.id,
-            bodyReqForm.value
-          )
-          .subscribe({
-            next: (res: any) => {
-              this.fcToastService.add({
-                severity: 'success',
-                header: 'Approval Registrasi Warga',
-                message: res.message,
-              });
-              this.actionButtons[0].hidden = true;
-              this.actionButtons[1].hidden = true;
-              this.router.navigate(['/civilians/list']);
-            },
-            error: (err) => {
-              this.fcToastService.add({
-                severity: 'error',
-                header: 'Approval Registrasi Warga',
-                message: err.message,
-              });
-            },
-          });
       },
     });
   }

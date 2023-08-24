@@ -2,17 +2,43 @@
   <app-fc-action-bar [isHasBackButton]="true" [actionButtons]="actionButtons" />
   <form
     [formGroup]="documentSubmissionForm"
-    class="body relative h-full w-full overflow-y-auto pt-5 text-xs">
+    class="body relative h-full w-full space-y-3 overflow-y-auto pt-5 text-xs">
     <fc-select-option
       [options]="document_type"
-      (ngModelChange)="removeType()"
+      (ngModelChange)="onSelectType($event)"
       formControlName="type"
-      [optionValue]="'id'"
       [optionLable]="'name'"
       title="Tipe Dokumen"
       [placeholder]="'Pilih Dokumen'"
       [desktopView]="'overlay'"
       [mobileView]="'dialog'">
     </fc-select-option>
+    <ng-container *ngIf="documentSubmissionForm.value.type">
+      <div
+        *ngFor="
+          let required_file of documentSubmissionForm.value.type.required_files
+        ">
+        <fc-file-input (onInput)="addImage($event, required_file)">
+          <div
+            class="form-input border border-transparent flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest">
+            <p
+              class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+              Klik untuk memilih {{ required_file }}
+            </p>
+            <div class="text-xs space-y-2">
+              <ng-container *ngIf="getDocumentAttachmentFile(required_file)">
+                <fa-icon [icon]="faFile" [fixedWidth]="true"></fa-icon>
+                <span
+                  >{{ getDocumentAttachmentFile(required_file).file.name }}
+                </span>
+              </ng-container>
+              <ng-container *ngIf="!getDocumentAttachmentFile(required_file)">
+                Belum ada file yang dipilih
+              </ng-container>
+            </div>
+          </div>
+        </fc-file-input>
+      </div>
+    </ng-container>
   </form>
 </div>

@@ -12,7 +12,9 @@ const ROOT_API = environment.API_URL;
 export class DocumentSubmissionService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getSubmissions(dataListParameter: DataListParameter = {} as DataListParameter) {
+  getSubmissions(
+    dataListParameter: DataListParameter = {} as DataListParameter
+  ) {
     let param = '';
     if (dataListParameter.rows && dataListParameter.page) {
       param = param.concat(
@@ -38,6 +40,9 @@ export class DocumentSubmissionService {
 
   getSubmission(id: number) {
     return this.http.get(`${ROOT_API}/submissions/${id}`);
+  }
+  setProgressocumentSubmission(id: number, data: any) {
+    return this.http.post(`${ROOT_API}/submissions/${id}/progress`, data);
   }
 
   createSubmission(data: any) {

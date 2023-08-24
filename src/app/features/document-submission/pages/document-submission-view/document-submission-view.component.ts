@@ -2,18 +2,21 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Ability } from '@casl/ability';
 import { environment } from '@env';
+import { CiviliansApprovalNoteDialogComponent } from '@features/civilians/components/civilians-approval-note-dialog/civilians-approval-note-dialog.component';
 import { DocumentSubmission } from '@features/document-submission/interfaces/document-submission';
 import { DocumentSubmissionService } from '@features/document-submission/services/document-submission.service';
 import {
+  faCheck,
   faChevronDown,
   faDownload,
   faEye,
   faFile,
   faPlus,
-  faSave,
   faTimes,
   faTruckMoving,
+  faX,
 } from '@fortawesome/free-solid-svg-icons';
 import { FcConfirmService } from '@shared/components/fc-confirm/fc-confirm.service';
 import { FcToastService } from '@shared/components/fc-toast/fc-toast.service';
@@ -43,10 +46,19 @@ export class DocumentSubmissionViewComponent {
 
   actionButtons: any[] = [
     {
-      label: 'Save',
-      icon: faSave,
+      label: 'Setuju',
+      icon: faCheck,
+      hidden: true,
       action: () => {
-        this.submit();
+        this.approveUser();
+      },
+    },
+    {
+      label: 'Tolak',
+      icon: faX,
+      hidden: true,
+      action: () => {
+        this.rejectRegistration();
       },
     },
   ];
@@ -130,7 +142,8 @@ export class DocumentSubmissionViewComponent {
     private router: Router,
     private messageService: MessageService,
     private location: Location,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ability: Ability
   ) {
     if (this.route.snapshot.paramMap.get('id')) {
       this.documentSubmission.id = Number(
@@ -178,7 +191,6 @@ export class DocumentSubmissionViewComponent {
         },
       });
   }
-
   ngAfterContentInit(): void {}
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -268,6 +280,102 @@ export class DocumentSubmissionViewComponent {
 
   getFileName(file: any): string {
     return file.file.name;
+  }
+  rejectRegistration() {
+    this.fcConfirmService.open({
+      header: 'Confirmation',
+      message: `Apakah kamu yakin ingin menolak registrasi user ini?`,
+      accept: () => {
+        const ref = this.dialogService.open(
+          CiviliansApprovalNoteDialogComponent,
+          {
+            data: {
+              title: 'Tolak Registrasi',
+            },
+            showHeader: false,
+            contentStyle: {
+              padding: '0',
+            },
+            style: {
+              overflow: 'hidden',
+            },
+            styleClass: 'rounded-sm',
+            dismissableMask: true,
+            width: '450px',
+          }
+        );
+        ref.onClose.subscribe((data) => {
+          if (data) {
+            let bodyReqForm: FormGroup;
+            bodyReqForm = new FormGroup({
+              note: new FormControl(data.note),
+              status: new FormControl(2),
+            });
+            this.documentSubmissionService
+              .setProgressocumentSubmission(
+                this.documentSubmission.id,
+                bodyReqForm.value
+              )
+              .subscribe({
+                next: (res: any) => {
+                  this.fcToastService.add({
+                    severity: 'success',
+                    header: 'Tolak Registrasi Warga',
+                    message: res.message,
+                  });
+                  this.actionButtons[0].hidden = true;
+                  this.actionButtons[1].hidden = true;
+                  this.router.navigate(['/civilians/list']);
+                },
+                error: (err) => {
+                  this.fcToastService.add({
+                    severity: 'error',
+                    header: 'Tolak Registrasi Warga',
+                    message: err.message,
+                  });
+                },
+              });
+          }
+        });
+      },
+    });
+  }
+
+  approveUser() {
+    this.fcConfirmService.open({
+      header: 'Confirmation',
+      message: `Apakah kamu yakin ingin menyetujui registrasi user ini?`,
+      accept: () => {
+        let bodyReqForm: FormGroup;
+        bodyReqForm = new FormGroup({
+          status: new FormControl(1),
+        });
+        this.documentSubmissionService
+          .setProgressocumentSubmission(
+            this.documentSubmission.id,
+            bodyReqForm.value
+          )
+          .subscribe({
+            next: (res: any) => {
+              this.fcToastService.add({
+                severity: 'success',
+                header: 'Approval Registrasi Warga',
+                message: res.message,
+              });
+              this.actionButtons[0].hidden = true;
+              this.actionButtons[1].hidden = true;
+              this.router.navigate(['/civilians/list']);
+            },
+            error: (err) => {
+              this.fcToastService.add({
+                severity: 'error',
+                header: 'Approval Registrasi Warga',
+                message: err.message,
+              });
+            },
+          });
+      },
+    });
   }
   back() {
     this.location.back();

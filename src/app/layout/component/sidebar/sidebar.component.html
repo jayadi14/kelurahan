@@ -22,47 +22,33 @@
   </div>
   <div class="h-full flex-1 overflow-y-auto">
     <nav aria-label="Sidebar">
-      <div
-        *ngFor="let mainMenu of mainMenus"
-        class="relative w-full items-center text-xs">
-        <ng-container *ngIf="!mainMenu.subMenus">
-          <a
-            class="relative block flex-1 cursor-pointer px-5 py-2 hover:bg-primary-light hover:text-white dark:hover:bg-primary-dark"
-            [routerLink]="mainMenu.route"
-            routerLinkActive=" [&>.indicator]:block text-white bg-primary-light dark:bg-primary-dark">
-            <div>{{ mainMenu.name }}</div>
-            <span
-              class="indicator absolute left-0 top-0 hidden h-full w-2 bg-primary dark:bg-primary"></span>
-          </a>
-        </ng-container>
-        <ng-container *ngIf="mainMenu.subMenus">
-          <a
-            (click)="mainMenu.showRoutes = !mainMenu.showRoutes"
-            class="relative flex w-full flex-1 cursor-pointer items-center px-5 py-2 hover:bg-primary-light hover:text-white dark:hover:bg-primary-dark"
-            [ngClass]="{
-              'bg-primary-light text-white dark:bg-primary-dark [&>.indicator]:block':
-                mainMenu.showRoutes
-            }">
-            <div class="flex-1">{{ mainMenu.name }}</div>
-            <div
-              class="fc-animate-scale"
-              [ngClass]="{ 'rotate-180': !mainMenu.showRoutes }">
-              <fa-icon [icon]="faChevronUp"></fa-icon>
-            </div>
-            <span
-              class="indicator absolute left-0 top-0 hidden h-full w-2 dark:bg-primary"></span>
-          </a>
-          <div class="mx-7 my-1" *ngIf="mainMenu.showRoutes">
-            <ng-container *ngFor="let subMenu of mainMenu.subMenus">
-              <a
-                class="block cursor-pointer rounded-md px-2 py-2 hover:bg-light-high dark:hover:bg-dark-high"
-                [routerLink]="subMenu.route"
-                routerLinkActive="bg-light-high dark:bg-dark-high">
-                {{ subMenu.name }}
-              </a>
-            </ng-container>
-          </div>
-        </ng-container>
+      <div class="relative w-full items-center text-xs">
+        <a
+          *ngIf="!('civilians' | able : 'all')"
+          class="relative block flex-1 cursor-pointer px-5 py-2 hover:bg-primary-light hover:text-white dark:hover:bg-primary-dark"
+          routerLink="/civilians"
+          routerLinkActive=" [&>.indicator]:block text-white bg-primary-light dark:bg-primary-dark">
+          <div>Warga</div>
+          <span
+            class="indicator absolute left-0 top-0 hidden h-full w-2 bg-primary dark:bg-primary"></span>
+        </a>
+        <a
+          *ngIf="'lurah' | able : 'all'"
+          class="relative block flex-1 cursor-pointer px-5 py-2 hover:bg-primary-light hover:text-white dark:hover:bg-primary-dark"
+          routerLink="/staff"
+          routerLinkActive=" [&>.indicator]:block text-white bg-primary-light dark:bg-primary-dark">
+          <div>Staff RT/RW</div>
+          <span
+            class="indicator absolute left-0 top-0 hidden h-full w-2 bg-primary dark:bg-primary"></span>
+        </a>
+        <a
+          class="relative block flex-1 cursor-pointer px-5 py-2 hover:bg-primary-light hover:text-white dark:hover:bg-primary-dark"
+          routerLink="/document-submission"
+          routerLinkActive=" [&>.indicator]:block text-white bg-primary-light dark:bg-primary-dark">
+          <div>Pengajuan Dokumen</div>
+          <span
+            class="indicator absolute left-0 top-0 hidden h-full w-2 bg-primary dark:bg-primary"></span>
+        </a>
       </div>
     </nav>
   </div>

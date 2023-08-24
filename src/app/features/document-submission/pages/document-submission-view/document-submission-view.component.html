@@ -1,1 +1,63 @@
-<p>document-submission-view works!</p>
+<div class="flex h-full flex-col space-y-3">
+  <app-fc-action-bar [isHasBackButton]="true" [actionButtons]="actionButtons" />
+  <form
+    [formGroup]="documentSubmissionForm"
+    class="body relative h-full w-full space-y-3 overflow-y-auto pt-5 text-xs">
+    <fc-select-option
+      [options]="document_type"
+      (ngModelChange)="onSelectType($event)"
+      formControlName="type"
+      [optionLable]="'name'"
+      title="Tipe Dokumen"
+      [placeholder]="'Pilih Dokumen'"
+      [desktopView]="'overlay'"
+      [mobileView]="'dialog'">
+    </fc-select-option>
+    <ng-container *ngIf="documentSubmissionForm.value.type">
+      <div
+        class="flex gap-2 w-full items-center"
+        *ngFor="
+          let required_file of documentSubmissionForm.value.type.required_files;
+          let i = index
+        ">
+        <fc-file-input
+          class="flex-1"
+          (onInput)="addImage($event, required_file)">
+          <div
+            class="form-input border border-transparent flex flex-col rounded-lg bg-light-lowest p-2 dark:bg-dark-low focus-within:border-light-lowest focus-within:dark:border-dark-lowest">
+            <p
+              class="m-0 block p-0 text-2xs font-medium leading-5 text-dark-lowest dark:text-white/60">
+              Klik untuk memilih {{ required_file }}
+            </p>
+            <div class="text-xs space-y-2">
+              <ng-container *ngIf="getDocumentAttachmentFile(required_file)">
+                <fa-icon [icon]="faFile" [fixedWidth]="true"></fa-icon>
+                <span *ngIf="getDocumentAttachmentFile(required_file).file"
+                  >{{ getDocumentAttachmentFile(required_file).file.name }}
+                </span>
+                <span *ngIf="!getDocumentAttachmentFile(required_file).file"
+                  >{{ required_file }}
+                </span>
+              </ng-container>
+              <ng-container *ngIf="!getDocumentAttachmentFile(required_file)">
+                Belum ada file yang dipilih
+              </ng-container>
+            </div>
+          </div>
+        </fc-file-input>
+        <ng-container *ngIf="documentAttachments.at(i).value.downloadLink">
+          <a
+            target="_blank"
+            [href]="documentAttachments.at(i).value.downloadLink">
+            <button
+              title="Download File"
+              type="button"
+              class="p-3 rounded-md hover:bg-light-low dark:hover:bg-dark-low">
+              <fa-icon [fixedWidth]="true" [icon]="faDownload"></fa-icon>
+            </button>
+          </a>
+        </ng-container>
+      </div>
+    </ng-container>
+  </form>
+</div>
